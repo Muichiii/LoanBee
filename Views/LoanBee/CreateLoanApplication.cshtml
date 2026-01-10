@@ -1,0 +1,186 @@
+﻿@model LoanBee.Models.LoanApplicationViewModel
+
+@{
+    ViewData["Title"] = "New Loan Application";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Loan Application Form</h2>
+
+    <form asp-action="CreateLoanApplication" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">Loan Details</div>
+            <div class="card-body row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Application.Loan_amount" class="form-label">Amount</label>
+                    <input asp-for="Application.Loan_amount" class="form-control" type="number" />
+                    <span asp-validation-for="Application.Loan_amount" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Application.Loan_tenor" class="form-label">Tenor</label>
+                    <input asp-for="Application.Loan_tenor" class="form-control" />
+                    <span asp-validation-for="Application.Loan_tenor" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Application.Loan_purpose" class="form-label">Purpose</label>
+                    <input asp-for="Application.Loan_purpose" class="form-control" />
+                    <span asp-validation-for="Application.Loan_purpose" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-secondary text-white">Business Information</div>
+            <div class="card-body row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Business.Business_tin_no" class="form-label">Business TIN</label>
+                    <input asp-for="Business.Business_tin_no" class="form-control" />
+                    <span asp-validation-for="Business.Business_tin_no" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Business.Business_name" class="form-label">Business Name</label>
+                    <input asp-for="Business.Business_name" class="form-control" />
+                    <span asp-validation-for="Business.Business_name" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Business.Business_type" class="form-label">Business Type</label>
+                    <input asp-for="Business.Business_type" class="form-control" />
+                    <span asp-validation-for="Business.Business_type" class="text-danger"></span>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label asp-for="Business.Office_address" class="form-label">Office Address</label>
+                    <input asp-for="Business.Office_address" class="form-control" />
+                    <span asp-validation-for="Business.Office_address" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Business.Office_zip" class="form-label">Office Zip</label>
+                    <input asp-for="Business.Office_zip" class="form-control" />
+                    <span asp-validation-for="Business.Office_zip" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Business.Business_landline" class="form-label">Landline</label>
+                    <input asp-for="Business.Business_landline" class="form-control" />
+                    <span asp-validation-for="Business.Business_landline" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Business.Business_mobile_no" class="form-label">Mobile Number</label>
+                    <input asp-for="Business.Business_mobile_no" class="form-control" />
+                    <span asp-validation-for="Business.Business_mobile_no" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Business.Business_email" class="form-label">Email</label>
+                    <input asp-for="Business.Business_email" class="form-control" type="email" />
+                    <span asp-validation-for="Business.Business_email" class="text-danger"></span>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label asp-for="Business.Business_website" class="form-label">Website</label>
+                    <input asp-for="Business.Business_website" class="form-control" />
+                    <span asp-validation-for="Business.Business_website" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-info text-white">Owner Information</div>
+            <div class="card-body row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Owner.Owner_name" class="form-label">Full Name</label>
+                    <input asp-for="Owner.Owner_name" class="form-control" />
+                    <span asp-validation-for="Owner.Owner_name" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Owner.Owner_tin_no" class="form-label">Owner TIN</label>
+                    <input asp-for="Owner.Owner_tin_no" class="form-control" type="text" />
+                    <span asp-validation-for="Owner.Owner_tin_no" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Owner.Owner_gender" class="form-label">Gender</label>
+                    <select asp-for="Owner.Owner_gender" class="form-select">
+                        <option value="">-- Select --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span asp-validation-for="Owner.Owner_gender" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Owner.Owner_birthday" class="form-label">Birthday</label>
+                    <input asp-for="Owner.Owner_birthday" class="form-control" type="date" />
+                    <span asp-validation-for="Owner.Owner_birthday" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Owner.Owner_citizenship" class="form-label">Citizenship</label>
+                    <input asp-for="Owner.Owner_citizenship" class="form-control" />
+                    <span asp-validation-for="Owner.Owner_citizenship" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Owner.Owner_civil_status" class="form-label">Civil Status</label>
+                    <input asp-for="Owner.Owner_civil_status" class="form-control" />
+                    <span asp-validation-for="Owner.Owner_civil_status" class="text-danger"></span>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label asp-for="Owner.Owner_address" class="form-label">Home Address</label>
+                    <input asp-for="Owner.Owner_address" class="form-control" />
+                    <span asp-validation-for="Owner.Owner_address" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Owner.Owner_place_of_birth" class="form-label">Place of Birth</label>
+                    <input asp-for="Owner.Owner_place_of_birth" class="form-control" />
+                    <span asp-validation-for="Owner.Owner_place_of_birth" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Owner.Owner_mobile_no" class="form-label">Mobile Number</label>
+                    <input asp-for="Owner.Owner_mobile_no" class="form-control" />
+                    <span asp-validation-for="Owner.Owner_mobile_no" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Owner.Owner_landline" class="form-label">Landline</label>
+                    <input asp-for="Owner.Owner_landline" class="form-control" />
+                    <span asp-validation-for="Owner.Owner_landline" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Owner.Owner_email_address" class="form-label">Email Address</label>
+                    <input asp-for="Owner.Owner_email_address" class="form-control" type="email" />
+                    <span asp-validation-for="Owner.Owner_email_address" class="text-danger"></span>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label asp-for="Owner.Owner_education" class="form-label">Educational Attainment</label>
+                    <input asp-for="Owner.Owner_education" class="form-control" />
+                    <span asp-validation-for="Owner.Owner_education" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-dark text-white">Bank Account Details</div>
+            <div class="card-body row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="BankAccount.Account_no" class="form-label">Account Number</label>
+                    <input asp-for="BankAccount.Account_no" class="form-control" />
+                    <span asp-validation-for="BankAccount.Account_no" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="BankAccount.Account_type" class="form-label">Account Type</label>
+                    <input asp-for="BankAccount.Account_type" class="form-control" />
+                    <span asp-validation-for="BankAccount.Account_type" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="BankAccount.Relationship_since" class="form-label">Relationship Since</label>
+                    <input asp-for="BankAccount.Relationship_since" class="form-control" placeholder="e.g. Jan 2020" />
+                    <span asp-validation-for="BankAccount.Relationship_since" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mb-5">
+            <button type="submit" class="btn btn-success btn-lg px-5">Submit Application</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -15,16 +15,16 @@ namespace LoanBee.Migrations
                 name: "Applications",
                 columns: table => new
                 {
-                    application_no = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    loan_amount = table.Column<int>(type: "int", nullable: false),
-                    loan_tenor = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    loan_purpose = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    application_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    application_status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Application_no = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Loan_amount = table.Column<int>(type: "int", nullable: false),
+                    Loan_tenor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Loan_purpose = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Application_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Application_status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Applications", x => x.application_no);
+                    table.PrimaryKey("PK_Applications", x => x.Application_no);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,8 +63,7 @@ namespace LoanBee.Migrations
                 name: "Owners",
                 columns: table => new
                 {
-                    Owner_tin_no = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Owner_tin_no = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Owner_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Owner_gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Owner_birthday = table.Column<DateTime>(type: "datetime2", nullable: false),

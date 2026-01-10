@@ -5,13 +5,13 @@ namespace LoanBee.Models.Entities
     public class Application
     {
         [Key]
-        public Guid application_no { get; set; }
+        public Guid Application_no { get; set; }
 
-        public int loan_amount { get; set; }
-        public string loan_tenor { get; set; }
-        public string loan_purpose { get; set; }
-        public DateTime application_date { get; set; }
-        public string application_status { get; set; }
+        public int Loan_amount { get; set; }
+        public string Loan_tenor { get; set; }
+        public string Loan_purpose { get; set; }
+        public DateTime Application_date { get; set; }
+        public string Application_status { get; set; }
     }
 }
 

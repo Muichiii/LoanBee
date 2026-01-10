@@ -5,7 +5,7 @@ namespace LoanBee.Models.Entities
     public class Owner
     {
         [Key]
-        public int Owner_tin_no { get; set; }
+        public string Owner_tin_no { get; set; }
 
         public string Owner_name { get; set; }
         public string Owner_gender { get; set; }

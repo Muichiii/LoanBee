@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanBee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260110052057_Initial Migration")]
+    [Migration("20260110140929_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -27,29 +27,29 @@ namespace LoanBee.Migrations
 
             modelBuilder.Entity("LoanBee.Models.Entities.Application", b =>
                 {
-                    b.Property<Guid>("application_no")
+                    b.Property<Guid>("Application_no")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("application_date")
+                    b.Property<DateTime>("Application_date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("application_status")
+                    b.Property<string>("Application_status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("loan_amount")
+                    b.Property<int>("Loan_amount")
                         .HasColumnType("int");
 
-                    b.Property<string>("loan_purpose")
+                    b.Property<string>("Loan_purpose")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("loan_tenor")
+                    b.Property<string>("Loan_tenor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("application_no");
+                    b.HasKey("Application_no");
 
                     b.ToTable("Applications");
                 });
@@ -116,11 +116,8 @@ namespace LoanBee.Migrations
 
             modelBuilder.Entity("LoanBee.Models.Entities.Owner", b =>
                 {
-                    b.Property<int>("Owner_tin_no")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Owner_tin_no"));
+                    b.Property<string>("Owner_tin_no")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Owner_address")
                         .IsRequired()
