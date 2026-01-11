@@ -8,7 +8,9 @@ namespace LoanBee.Models.Entities
         [Key]
         public Guid Application_no { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime Application_date { get; set; }
+
         public string Application_status { get; set; } = null!;
 
         public int Loan_amount { get; set; }

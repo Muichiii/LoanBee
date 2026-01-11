@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LoanBee.Models.Entities
 {
@@ -10,7 +11,10 @@ namespace LoanBee.Models.Entities
         // other fields...
         public string Owner_name { get; set; } = null!;
         public string Owner_gender { get; set; } = null!;
+
+        [Column(TypeName = "date")]
         public DateTime Owner_birthday { get; set; }
+
         public string Owner_citizenship { get; set; } = null!;
         public string Owner_civil_status { get; set; } = null!;
         public string Owner_address { get; set; } = null!;
