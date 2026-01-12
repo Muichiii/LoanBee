@@ -1,6 +1,133 @@
-﻿@{
+﻿@* @model LoanBee.Areas.Admin.Controllers.AdminHomeVm *@
+
+@{
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h2>Admin Dashboard</h2>
-<p>Admin pages go here.</p>
+<div class="container-fluid mt-4">
+    <h2 class="display-5 fw-bold mb-1">Admin Dashboard</h2>
+    <p class="text-muted mb-4">Admin pages go here.</p>
+
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h3 class="mb-0">Loan Applications</h3>
+            <small class="text-muted">Manage and review all loan applications</small>
+        </div>
+    </div>
+
+    <form method="get" id="filterForm" class="mb-3">
+        <div class="row g-2">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <span class="input-group-text">🔎</span>
+                    <input name="query"
+                           id="searchInput"
+                           class="form-control"
+                           placeholder="Search applications..."
+                           value="@Model.Query" />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <select name="status" id="statusFilter" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Statuses</option>
+                    <option value="Pending" selected="@(Model.Status == "Pending")">Pending</option>
+                    <option value="Approved" selected="@(Model.Status == "Approved")">Approved</option>
+                    <option value="Rejected" selected="@(Model.Status == "Rejected")">Rejected</option>
+                    <option value="Under Review" selected="@(Model.Status == "Under Review")">Under Review</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <a class="btn btn-outline-secondary"
+                   href="@Url.Action("Index", "Home", new { area = "Admin" })">
+                    Clear All Filters
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Application ID</th>
+                            <th>Applicant</th>
+                            <th>Amount</th>
+                            <th>Tenor</th>
+                            <th>Purpose</th>
+                            <th>Date Applied</th>
+                            <th>Status</th>
+                            <th style="width:160px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Rows == null || Model.Rows.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    No loan applications found.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var r in Model.Rows)
+                            {
+                                var badgeClass = r.Status switch
+                                {
+                                    "Approved" => "bg-success",
+                                    "Rejected" => "bg-danger",
+                                    "Under Review" => "bg-warning text-dark",
+                                    _ => "bg-secondary"
+                                };
+
+                                <tr>
+                                    <td class="text-truncate" style="max-width:260px;">
+                                        @r.ApplicationNo
+                                    </td>
+                                    <td>@r.ApplicantName</td>
+                                    <td>@r.Amount</td>
+                                    <td>@r.Tenor</td>
+                                    <td>@r.Purpose</td>
+                                    <td>@r.DateApplied.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <span class="badge @badgeClass">@r.Status</span>
+                                    </td>
+                                    <td class="d-flex gap-2">
+                                        <a class="btn btn-sm btn-outline-primary" href="#">
+                                            View
+                                        </a>
+                                        <a class="btn btn-sm btn-outline-success" href="#">
+                                            Update
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-submit on dropdown change (already handled by onchange, this is extra-safe)
+        document.getElementById('statusFilter')?.addEventListener('change', function () {
+            document.getElementById('filterForm')?.submit();
+        });
+
+        // Auto-submit when typing in search (debounced)
+        let searchTimeout;
+        document.getElementById('searchInput')?.addEventListener('input', function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function () {
+                document.getElementById('filterForm')?.submit();
+            }, 500);
+        });
+    </script>
+}
