@@ -97,7 +97,8 @@
                                         <span class="badge @badgeClass">@r.Status</span>
                                     </td>
                                     <td class="d-flex gap-2">
-                                        <a class="btn btn-sm btn-outline-primary" href="#">
+                                        <a class="btn btn-sm btn-outline-primary"
+                                           href="@Url.Action("Details", "Home", new { area = "Admin", id = r.ApplicationNo })">
                                             View
                                         </a>
                                         <a class="btn btn-sm btn-outline-success" href="#">
