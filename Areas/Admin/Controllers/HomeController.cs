@@ -191,5 +191,56 @@ namespace LoanBee.Areas.Admin.Controllers
             };
         }
 
+        // GET: /Admin/Home/Delete/{id}
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var app = await _context.Applications
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Application_no == id);
+
+            if (app == null) return NotFound();
+
+            if (!IsDeleteAllowed(app.Application_status))
+                return Forbid(); // or return BadRequest("Not allowed");
+
+            var vm = new AdminDeleteApplicationVm
+            {
+                ApplicationNo = app.Application_no,
+                Status = app.Application_status,
+                DateApplied = app.Application_date,
+                Amount = app.Loan_amount,
+                Tenor = app.Loan_tenor,
+                Purpose = app.Loan_purpose
+            };
+
+            return View(vm);
+        }
+
+        // POST: /Admin/Home/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(AdminDeleteApplicationVm vm)
+        {
+            var app = await _context.Applications
+                .FirstOrDefaultAsync(a => a.Application_no == vm.ApplicationNo);
+
+            if (app == null) return NotFound();
+
+            // Server-side enforcement
+            if (!IsDeleteAllowed(app.Application_status))
+                return Forbid();
+
+            _context.Applications.Remove(app);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home", new { area = "Admin" });
+        }
+
+        private static bool IsDeleteAllowed(string status)
+        {
+            return status == "Rejected" || status == "Completed";
+        }
+
     }
 }

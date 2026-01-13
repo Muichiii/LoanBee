@@ -103,6 +103,13 @@
                                                    new { area = "Admin", id = r.ApplicationNo })">
                                             Update
                                         </a>
+                                        @if (r.Status == "Rejected" || r.Status == "Completed")
+                                        {
+                                            <a class="btn btn-sm btn-outline-danger"
+                                               href="@Url.Action("Delete", "Home", new { area = "Admin", id = r.ApplicationNo })">
+                                                Delete
+                                            </a>
+                                        }
 
                                     </td>
                                 </tr>
