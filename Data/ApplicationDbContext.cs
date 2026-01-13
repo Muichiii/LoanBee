@@ -21,11 +21,11 @@ namespace LoanBee.Data
             base.OnModelCreating(modelBuilder);
 
             // Link Owner to User
-            modelBuilder.Entity<Owner>()
-                .HasOne(o => o.User)
-                .WithMany() // Or .WithOne() depending on your business logic
-                .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Application>()
+                .HasOne(a => a.Owner)           // Application has one Owner
+                .WithMany(o => o.Applications)  // Owner has many Applications
+                .HasForeignKey(a => a.Owner_tin_no) // Use this specific column
+                .IsRequired();
 
             // Business -> Owner (many businesses can belong to one owner)
             modelBuilder.Entity<Business>()

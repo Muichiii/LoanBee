@@ -6,80 +6,144 @@
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Welcome, @ViewBag.UserName!</h1>
-        <a asp-controller="LoanBee" asp-action="CreateLoanApplication" class="btn btn-primary">
+        <div>
+            <h1 class="fw-bold">Welcome back, @(ViewBag.UserName ?? "User")!</h1>
+            <p class="text-muted">Here's your loan management overview</p>
+        </div>
+        <a asp-controller="LoanBee" asp-action="CreateLoanApplication" class="btn btn-primary btn-lg shadow-sm">
             + New Application
         </a>
     </div>
 
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-info text-white fw-bold">Owner Profile</div>
-                <div class="card-body">
-                    @if (Model != null)
-                    {
-                        <p><strong>Name:</strong> @Model.Owner_name</p>
-                        <p><strong>TIN:</strong> @Model.Owner_tin_no</p>
-                        <p><strong>Email:</strong> @Model.Owner_email_address</p>
-                        <p><strong>Mobile:</strong> @Model.Owner_mobile_no</p>
-                    }
-                    else
-                    {
-                        <p class="text-muted">No profile data found. Complete an application to link your info.</p>
-                    }
+    @if (Model == null)
+    {
+        <div class="text-center p-5 bg-white rounded shadow-sm border">
+            <h3 class="text-muted">No Applications Found</h3>
+            <p class="lead mb-4">It looks like you haven't submitted a loan application yet.</p>
+            <a asp-controller="LoanBee" asp-action="CreateLoanApplication" class="btn btn-outline-primary px-5">Get Started Now</a>
+        </div>
+    }
+    else
+    {
+        <div class="card mb-4 shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold">Owner Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <small class="text-muted d-block text-uppercase fw-bold">Full Name</small>
+                        <span>@Model.Owner_name</span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <small class="text-muted d-block text-uppercase fw-bold">TIN</small>
+                        <span>@Model.Owner_tin_no</span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <small class="text-muted d-block text-uppercase fw-bold">Civil Status</small>
+                        <span>@Model.Owner_civil_status</span>
+                    </div>
+                    <div class="col-md-4">
+                        <small class="text-muted d-block text-uppercase fw-bold">Email</small>
+                        <span>@Model.Owner_email_address</span>
+                    </div>
+                    <div class="col-md-4">
+                        <small class="text-muted d-block text-uppercase fw-bold">Mobile</small>
+                        <span>@Model.Owner_mobile_no</span>
+                    </div>
+                    <div class="col-md-4">
+                        <small class="text-muted d-block text-uppercase fw-bold">Education</small>
+                        <span>@Model.Owner_education</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-success text-white fw-bold">Active Applications</div>
-                <div class="card-body">
-                    @if (Model != null && Model.Applications.Any(a => a.Application_status != "Completed"))
-                    {
-                        var activeApps = Model.Applications.Where(a => a.Application_status != "Completed").ToList();
-                        <ul class="list-group list-group-flush">
-                            @foreach (var app in activeApps)
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>@app.Loan_amount.ToString("C")</strong><br />
-                                        <small class="text-muted">@app.Application_date.ToShortDateString()</small>
-                                    </div>
-                                    <span class="badge bg-warning text-dark">@app.Application_status</span>
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <p class="text-muted text-center py-4">No active applications.</p>
-                    }
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0 fw-bold">Active Applications</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-3 border-0">Amount</th>
+                                        <th class="border-0">Tenor</th>
+                                        <th class="border-0">Applied Date</th>
+                                        <th class="text-center border-0">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var app in Model.Applications.Where(a => a.Application_status != "Completed").OrderByDescending(a => a.Application_date))
+                                    {
+                                        <tr>
+                                            <td class="ps-3 fw-bold">@app.Loan_amount.ToString("C")</td>
+                                            <td>@app.Loan_tenor</td>
+                                            <td>@app.Application_date.ToString("yyyy-MM-dd")</td>
+                                            <td class="text-center">
+                                                @{
+                                                    var badgeClass = app.Application_status switch
+                                                    {
+                                                        "Approved" => "bg-success",
+                                                        "Pending" => "bg-warning text-dark",
+                                                        "Rejected" => "bg-danger",
+                                                        _ => "bg-secondary"
+                                                    };
+                                                }
+                                                <span class="badge @badgeClass rounded-pill px-3">@app.Application_status</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (!Model.Applications.Any(a => a.Application_status != "Completed"))
+                                    {
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4 text-muted">No ongoing applications.</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-header bg-dark text-white fw-bold">Bank Accounts</div>
-                <div class="card-body">
-                    @if (Model != null && Model.BankAccounts.Any())
-                    {
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0 fw-bold">Bank Accounts</h5>
+                    </div>
+                    <div class="card-body">
                         @foreach (var bank in Model.BankAccounts)
                         {
-                            <div class="mb-2 border-bottom pb-2">
-                                <strong>@bank.Account_type</strong><br />
-                                <small>No: @bank.Account_no</small>
+                            <div class="p-3 border rounded mb-3 bg-light">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">@bank.Account_no</h6>
+                                        <small class="text-muted">@bank.Account_type</small>
+                                    </div>
+                                    <span class="badge bg-dark">Linked</span>
+                                </div>
+                                <hr class="my-2" />
+                                <small class="text-muted">Partner since: @bank.Relationship_since</small>
                             </div>
                         }
-                    }
-                    else
-                    {
-                        <p class="text-muted text-center py-4">No linked accounts.</p>
-                    }
+                        @if (!Model.BankAccounts.Any())
+                        {
+                            <p class="text-center text-muted py-4">No bank accounts linked.</p>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
+
+<style>
+    body { background-color: #f8f9fa; }
+    .card { border-radius: 12px; }
+    .card-header { border-bottom: 1px solid #f0f0f0; }
+    .table thead th { font-size: 0.85rem; color: #6c757d; }
+</style>

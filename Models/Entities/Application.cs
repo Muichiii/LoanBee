@@ -8,6 +8,13 @@ namespace LoanBee.Models.Entities
         [Key]
         public Guid Application_no { get; set; }
 
+        // This is the Foreign Key property
+        public string Owner_tin_no { get; set; } = null!;
+
+        // This is the Navigation Property
+        [ForeignKey("Owner_tin_no")]
+        public virtual Owner? Owner { get; set; } = null!;
+
         [Column(TypeName = "date")]
         public DateTime Application_date { get; set; }
 

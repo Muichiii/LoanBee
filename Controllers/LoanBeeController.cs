@@ -16,9 +16,27 @@ namespace LoanBee.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateLoanApplication()
+        public async Task<IActionResult> CreateLoanApplication()
         {
-            return View(new LoanApplicationViewModel());
+            var userIdString = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out Guid userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Check if the user already has an Owner profile
+            var existingOwner = await _context.Owners
+                .FirstOrDefaultAsync(o => o.UserId == userId);
+
+            var viewModel = new LoanApplicationViewModel();
+
+            if (existingOwner != null)
+            {
+                // Auto-fill the form with existing data
+                viewModel.Owner = existingOwner;
+            }
+
+            return View(viewModel);
         }
 
         // POST: /LoanBee/CreateLoanApplication
@@ -26,40 +44,54 @@ namespace LoanBee.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateLoanApplication(LoanApplicationViewModel model, string submitButton)
         {
-            // 1. Handle "Edit" button from Review Page
-            if (submitButton == "Edit")
-            {
-                return View(model);
-            }
+            // 1. NUCLEAR CLEANUP: Remove all system-generated and navigation properties
+            // This stops "Application_status", "Owner", and "Owner_tin_no" errors
 
-            // 2. Clear validation for auto-generated fields
+            // Application Structural Fields
             ModelState.Remove("Application.Application_status");
+            ModelState.Remove("Application.Application_no");
+            ModelState.Remove("Application.Application_date");
+            ModelState.Remove("Application.Owner_tin_no");
             ModelState.Remove("Application.Business_tin_no");
             ModelState.Remove("Application.Account_no");
-            ModelState.Remove("Business.Owner_tin_no");
-            ModelState.Remove("BankAccount.Owner_tin_no");
+
+            // Navigation Objects (The "Owner" and "Business" links)
+            ModelState.Remove("Application.Owner");
             ModelState.Remove("Application.Business");
             ModelState.Remove("Application.BankAccount");
+            ModelState.Remove("Owner"); // The root Owner object in ViewModel
+
+            // Owner Internal Links
+            ModelState.Remove("Owner.UserId");
+            ModelState.Remove("Owner.User");
+            ModelState.Remove("Owner.Applications");
+            ModelState.Remove("Owner.Businesses");
+            ModelState.Remove("Owner.BankAccounts");
+
+            // Business & Bank Internal Links
             ModelState.Remove("Business.Owner");
             ModelState.Remove("BankAccount.Owner");
-            ModelState.Remove("Owner.User");
+            ModelState.Remove("Business.Owner_tin_no");
+            ModelState.Remove("BankAccount.Owner_tin_no");
 
+            // 3. Now check if the actual user-inputted data is valid
             if (!ModelState.IsValid)
             {
+                // If errors still appear, they will be about actual fields like Name or Amount
+                ViewBag.IsPreview = false;
                 return View(model);
             }
 
-            // 3. Handle "Next" button (Redirect to Review Page)
             if (submitButton == "Next")
             {
                 ViewBag.IsPreview = true;
                 return View(model);
             }
 
-            // 4. Handle "Submit" button (Final Database Save)
+            // 5. Handle "Submit" button (Final Database Save)
             if (submitButton == "Submit")
             {
-                // Verify User Session
+                // 1. Verify User Session
                 var userIdString = HttpContext.Session.GetString("UserId");
                 if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out Guid userId))
                 {
@@ -70,40 +102,78 @@ namespace LoanBee.Controllers
                 {
                     try
                     {
-                        // STAGE A: Save Owner first (Parent of Business and Bank)
-                        model.Owner.UserId = userId;
-                        _context.Owners.Add(model.Owner);
+                        // 2. Handle Owner Information (Create or Update)
+                        // Check if this TIN already exists in the database
+                        var existingOwner = await _context.Owners
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync(o => o.Owner_tin_no == model.Owner.Owner_tin_no);
+
+                        if (existingOwner != null)
+                        {
+                            // If owner exists, update their profile with the latest info from the form
+                            model.Owner.UserId = userId; // Keep the owner linked to this account
+                            _context.Owners.Update(model.Owner);
+                        }
+                        else
+                        {
+                            // If new owner, assign the UserId and Add
+                            model.Owner.UserId = userId;
+                            _context.Owners.Add(model.Owner);
+                        }
+
+                        // Save immediately so the TIN is registered for the next steps
                         await _context.SaveChangesAsync();
 
-                        // STAGE B: Link and Save Business & Bank Account
+                        // 3. Link and Save Business
+                        // Since an owner can have multiple businesses, we check if this specific TIN exists
+                        var existingBusiness = await _context.Businesses
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync(b => b.Business_tin_no == model.Business.Business_tin_no);
+
                         model.Business.Owner_tin_no = model.Owner.Owner_tin_no;
-                        model.BankAccount.Owner_tin_no = model.Owner.Owner_tin_no;
+                        if (existingBusiness != null)
+                            _context.Businesses.Update(model.Business);
+                        else
+                            _context.Businesses.Add(model.Business);
 
-                        _context.Businesses.Add(model.Business);
-                        _context.BankAccounts.Add(model.BankAccount);
+                        // 4. Link and Save Bank Account
+                        var existingBank = await _context.BankAccounts
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync(b => b.Account_no == model.BankAccount.Account_no);
+
+                        model.BankAccount.Owner_tin_no = model.Owner.Owner_tin_no;
+                        if (existingBank != null)
+                            _context.BankAccounts.Update(model.BankAccount);
+                        else
+                            _context.BankAccounts.Add(model.BankAccount);
+
                         await _context.SaveChangesAsync();
 
-                        // STAGE C: Finalize and Save Application
+                        // 5. Create and Save the New Application
+                        // Applications are always new (Guid.NewGuid()) even for existing owners
                         model.Application.Application_no = Guid.NewGuid();
                         model.Application.Application_date = DateTime.Now;
                         model.Application.Application_status = "Under Review";
+
+                        // Critical Foreign Key Links
+                        model.Application.Owner_tin_no = model.Owner.Owner_tin_no;
                         model.Application.Business_tin_no = model.Business.Business_tin_no;
                         model.Application.Account_no = model.BankAccount.Account_no;
 
                         _context.Applications.Add(model.Application);
                         await _context.SaveChangesAsync();
 
-                        // Commit all changes if everything succeeded
+                        // 6. Commit everything to the Database
                         await transaction.CommitAsync();
 
                         return RedirectToAction("Index", "Home");
                     }
                     catch (Exception ex)
                     {
-                        // If anything fails, roll back the whole process
+                        // If any error occurs (e.g., DB connection, FK conflict), nothing is saved
                         await transaction.RollbackAsync();
-                        ModelState.AddModelError("", "An error occurred while saving: " + ex.Message);
-                        ViewBag.IsPreview = true;
+                        ModelState.AddModelError("", "Submission failed: " + ex.Message);
+                        ViewBag.IsPreview = true; // Stay on the review page so they can try again
                         return View(model);
                     }
                 }

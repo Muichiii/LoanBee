@@ -6,6 +6,7 @@ namespace LoanBee.Models.Entities
     public class Business
     {
         [Key]
+        [Required(ErrorMessage = "This field is required.")]
         public string Business_tin_no { get; set; } = null!;
 
         // FK to Owner
