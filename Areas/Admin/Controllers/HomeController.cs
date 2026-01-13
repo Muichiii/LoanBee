@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using LoanBee.Areas.Admin.Models;
 using LoanBee.Data;
-using LoanBee.Areas.Admin.Models;
+//using LoanBee.Models.ViewModels.Admin;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace LoanBee.Areas.Admin.Controllers
@@ -128,6 +129,66 @@ namespace LoanBee.Areas.Admin.Controllers
             if (details == null) return NotFound();
 
             return View(details);
+        }
+
+        // GET: /Admin/Home/Update/{id}
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
+        {
+            var app = await _context.Applications
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.Application_no == id);
+
+            if (app == null) return NotFound();
+
+            var vm = new AdminUpdateStatusVm
+            {
+                ApplicationNo = app.Application_no,
+                CurrentStatus = app.Application_status,
+                NewStatus = app.Application_status
+            };
+
+            return View(vm);
+        }
+
+        // POST: /Admin/Home/Update
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(AdminUpdateStatusVm vm)
+        {
+            if (!ModelState.IsValid)
+                return View(vm);
+
+            var app = await _context.Applications
+                .FirstOrDefaultAsync(a => a.Application_no == vm.ApplicationNo);
+
+            if (app == null) return NotFound();
+
+            // Enforce allowed transitions
+            if (!IsAllowedTransition(app.Application_status, vm.NewStatus))
+            {
+                ModelState.AddModelError("", "Invalid status transition.");
+                vm.CurrentStatus = app.Application_status;
+                return View(vm);
+            }
+
+            app.Application_status = vm.NewStatus;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Home",
+                new { area = "Admin", id = vm.ApplicationNo });
+        }
+
+        private static bool IsAllowedTransition(string current, string next)
+        {
+            if (current == next) return true;
+
+            return current switch
+            {
+                "Under Review" => next == "Approved" || next == "Rejected",
+                "Approved" => next == "Completed",
+                _ => false
+            };
         }
 
     }

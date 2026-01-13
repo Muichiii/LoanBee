@@ -5,9 +5,6 @@
 @model LoanBee.Areas.Admin.Models.AdminLoanApplicationsVm
 
 <div class="container-fluid mt-4">
-    <h2 class="display-5 fw-bold mb-1">Admin Dashboard</h2>
-    <p class="text-muted mb-4">Admin pages go here.</p>
-
     <div class="d-flex align-items-center justify-content-between mb-3">
         <div>
             <h3 class="mb-0">Loan Applications</h3>
@@ -19,7 +16,7 @@
         <div class="row g-2">
             <div class="col-md-8">
                 <div class="input-group">
-                    <span class="input-group-text">🔎</span>
+                    @* <span class="input-group-text">🔎</span> *@
                     <input name="query"
                            id="searchInput"
                            class="form-control"
@@ -31,7 +28,7 @@
             <div class="col-md-4">
                 <select name="status" id="statusFilter" class="form-select" onchange="this.form.submit()">
                     <option value="">All Statuses</option>
-                    <option value="Pending" selected="@(Model.Status == "Pending")">Pending</option>
+                    @* <option value="Pending" selected="@(Model.Status == "Pending")">Pending</option> *@
                     <option value="Approved" selected="@(Model.Status == "Approved")">Approved</option>
                     <option value="Rejected" selected="@(Model.Status == "Rejected")">Rejected</option>
                     <option value="Under Review" selected="@(Model.Status == "Under Review")">Under Review</option>
@@ -101,9 +98,12 @@
                                            href="@Url.Action("Details", "Home", new { area = "Admin", id = r.ApplicationNo })">
                                             View
                                         </a>
-                                        <a class="btn btn-sm btn-outline-success" href="#">
+                                        <a class="btn btn-sm btn-outline-success"
+                                           href="@Url.Action("Update", "Home",
+                                                   new { area = "Admin", id = r.ApplicationNo })">
                                             Update
                                         </a>
+
                                     </td>
                                 </tr>
                             }
