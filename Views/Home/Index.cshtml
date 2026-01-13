@@ -1,8 +1,85 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model LoanBee.Models.Entities.Owner
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Welcome, @ViewBag.UserName!</h1>
+        <a asp-controller="LoanBee" asp-action="CreateLoanApplication" class="btn btn-primary">
+            + New Application
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-info text-white fw-bold">Owner Profile</div>
+                <div class="card-body">
+                    @if (Model != null)
+                    {
+                        <p><strong>Name:</strong> @Model.Owner_name</p>
+                        <p><strong>TIN:</strong> @Model.Owner_tin_no</p>
+                        <p><strong>Email:</strong> @Model.Owner_email_address</p>
+                        <p><strong>Mobile:</strong> @Model.Owner_mobile_no</p>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No profile data found. Complete an application to link your info.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-success text-white fw-bold">Active Applications</div>
+                <div class="card-body">
+                    @if (Model != null && Model.Applications.Any(a => a.Application_status != "Completed"))
+                    {
+                        var activeApps = Model.Applications.Where(a => a.Application_status != "Completed").ToList();
+                        <ul class="list-group list-group-flush">
+                            @foreach (var app in activeApps)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>@app.Loan_amount.ToString("C")</strong><br />
+                                        <small class="text-muted">@app.Application_date.ToShortDateString()</small>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">@app.Application_status</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center py-4">No active applications.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-dark text-white fw-bold">Bank Accounts</div>
+                <div class="card-body">
+                    @if (Model != null && Model.BankAccounts.Any())
+                    {
+                        @foreach (var bank in Model.BankAccounts)
+                        {
+                            <div class="mb-2 border-bottom pb-2">
+                                <strong>@bank.Account_type</strong><br />
+                                <small>No: @bank.Account_no</small>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted text-center py-4">No linked accounts.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

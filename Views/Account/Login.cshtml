@@ -1,0 +1,142 @@
+﻿@model LoanBee.Models.Entities.User
+
+@{
+    Layout = null; // We disable the layout to provide a clean, dedicated login screen
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LoanBee - Welcome</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 15px;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .brand-name {
+            color: #0d6efd;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .toggle-link {
+            color: #0d6efd;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+            .toggle-link:hover {
+                text-decoration: underline;
+            }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1 class="text-center brand-name">LoanBee</h1>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @ViewBag.Error
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div id="loginSection">
+                <h4 class="mb-3">Login</h4>
+                <form asp-action="Login" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="name@example.com" required />
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Enter password" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 btn-lg mb-3">Login</button>
+                </form>
+                <p class="text-center mb-0">
+                    New to LoanBee? <span class="toggle-link" onclick="toggleAuth()">Create an account</span>
+                </p>
+            </div>
+
+            <div id="signupSection" style="display: none;">
+                <h4 class="mb-3">Sign Up</h4>
+                <form asp-action="Signup" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label">Full Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="John Doe" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email Address</label>
+                        <input asp-for="Email" class="form-control" placeholder="name@example.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Create a password" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 btn-lg mb-3">Sign Up</button>
+                </form>
+                <p class="text-center mb-0">
+                    Already have an account? <span class="toggle-link" onclick="toggleAuth()">Login instead</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        function toggleAuth() {
+            const login = document.getElementById('loginSection');
+            const signup = document.getElementById('signupSection');
+
+            if (login.style.display === 'none') {
+                login.style.display = 'block';
+                signup.style.display = 'none';
+            } else {
+                login.style.display = 'none';
+                signup.style.display = 'block';
+            }
+        }
+    </script>
+
+</body>
+</html>

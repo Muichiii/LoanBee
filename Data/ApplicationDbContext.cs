@@ -10,6 +10,7 @@ namespace LoanBee.Data
 
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<Business> Businesses { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
@@ -18,6 +19,13 @@ namespace LoanBee.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Link Owner to User
+            modelBuilder.Entity<Owner>()
+                .HasOne(o => o.User)
+                .WithMany() // Or .WithOne() depending on your business logic
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Business -> Owner (many businesses can belong to one owner)
             modelBuilder.Entity<Business>()

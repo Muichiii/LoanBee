@@ -14,7 +14,11 @@ namespace LoanBee.Models.Entities
         public string Application_status { get; set; } = null!;
 
         public int Loan_amount { get; set; }
+
+        [Required(ErrorMessage = "This field is required.")]
         public string Loan_purpose { get; set; } = null!;
+
+        [Required(ErrorMessage = "This field is required.")]
         public string Loan_tenor { get; set; } = null!;
 
         // FK to Business

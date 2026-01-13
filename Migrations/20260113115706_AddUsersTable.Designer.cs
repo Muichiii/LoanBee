@@ -4,6 +4,7 @@ using LoanBee.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LoanBee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260113115706_AddUsersTable")]
+    partial class AddUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,16 +57,11 @@ namespace LoanBee.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Owner_tin_no")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Application_no");
 
                     b.HasIndex("Account_no");
 
                     b.HasIndex("Business_tin_no");
-
-                    b.HasIndex("Owner_tin_no");
 
                     b.ToTable("Applications");
                 });
@@ -188,12 +186,7 @@ namespace LoanBee.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Owner_tin_no");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Owners");
                 });
@@ -235,10 +228,6 @@ namespace LoanBee.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LoanBee.Models.Entities.Owner", null)
-                        .WithMany("Applications")
-                        .HasForeignKey("Owner_tin_no");
-
                     b.Navigation("BankAccount");
 
                     b.Navigation("Business");
@@ -268,19 +257,6 @@ namespace LoanBee.Migrations
 
             modelBuilder.Entity("LoanBee.Models.Entities.Owner", b =>
                 {
-                    b.HasOne("LoanBee.Models.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LoanBee.Models.Entities.Owner", b =>
-                {
-                    b.Navigation("Applications");
-
                     b.Navigation("BankAccounts");
 
                     b.Navigation("Businesses");
