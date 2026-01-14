@@ -22,7 +22,8 @@
         <div class="card-body">
             <ul class="nav nav-pills">
                 @{
-                    string[] statuses = { "All", "Approved", "Under Review", "Completed" };
+                    // Added "Rejected" to the filter array
+                    string[] statuses = { "All", "Approved", "Under Review", "Rejected", "Completed" };
                 }
 
                 @foreach (var s in statuses)
@@ -72,7 +73,7 @@
                                     <td class="ps-4 fw-bold">@app.Application_no.ToString().ToUpper().Substring(0, 8)</td>
                                     <td class="text-muted">@app.Business_tin_no</td>
                                     <td class="fw-bold">@app.Loan_amount.ToString("C0", new System.Globalization.CultureInfo("en-PH"))</td>
-                                    <td>@app.Loan_tenor months</td>
+                                    <td>@app.Loan_tenor</td>
                                     <td>@app.Application_date.ToString("yyyy-MM-dd")</td>
                                     <td>
                                         @{
@@ -80,6 +81,7 @@
                                             {
                                                 "Approved" => "bg-success text-white",
                                                 "Under Review" => "bg-warning text-dark",
+                                                "Rejected" => "bg-danger text-white", // Added red badge for Rejected status
                                                 "Completed" => "bg-light text-dark border",
                                                 _ => "bg-info text-white"
                                             };

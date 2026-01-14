@@ -4,12 +4,15 @@
     ViewData["Title"] = ViewBag.IsPreview == true ? "Review Application" : "New Loan Application";
 }
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
 <div class="container mt-4">
     <h2 class="mb-4">@(ViewBag.IsPreview == true ? "Review Your Application" : "Loan Application Form")</h2>
 
     <form asp-action="CreateLoanApplication" method="post">
         @if (ViewBag.IsPreview == true)
         {
+            @* Hidden fields for Review Mode *@
             @Html.HiddenFor(m => m.Application.Loan_amount)
             @Html.HiddenFor(m => m.Application.Loan_tenor)
             @Html.HiddenFor(m => m.Application.Loan_purpose)
@@ -38,6 +41,7 @@
             @Html.HiddenFor(m => m.BankAccount.Account_type)
             @Html.HiddenFor(m => m.BankAccount.Relationship_since)
 
+            @* Review Cards Section *@
             <div class="card mb-4 shadow-sm">
                 <div class="card-header bg-primary text-white fw-bold">1. Loan Details</div>
                 <div class="card-body row">
@@ -55,10 +59,6 @@
                     <div class="col-md-4 mb-2"><strong>Type:</strong><br />@Model.Business.Business_type</div>
                     <div class="col-md-8 mb-2"><strong>Office Address:</strong><br />@Model.Business.Office_address</div>
                     <div class="col-md-4 mb-2"><strong>Zip Code:</strong><br />@Model.Business.Office_zip</div>
-                    <div class="col-md-4 mb-2"><strong>Landline:</strong><br />@Model.Business.Business_landline</div>
-                    <div class="col-md-4 mb-2"><strong>Mobile:</strong><br />@Model.Business.Business_mobile_no</div>
-                    <div class="col-md-4 mb-2"><strong>Email:</strong><br />@Model.Business.Business_email</div>
-                    <div class="col-md-12"><strong>Website:</strong><br />@Model.Business.Business_website</div>
                 </div>
             </div>
 
@@ -69,10 +69,6 @@
                     <div class="col-md-4 mb-2"><strong>TIN:</strong><br />@Model.Owner.Owner_tin_no</div>
                     <div class="col-md-2 mb-2"><strong>Gender:</strong><br />@Model.Owner.Owner_gender</div>
                     <div class="col-md-2 mb-2"><strong>Birthday:</strong><br />@Model.Owner.Owner_birthday.ToShortDateString()</div>
-                    <div class="col-md-4 mb-2"><strong>Citizenship:</strong><br />@Model.Owner.Owner_citizenship</div>
-                    <div class="col-md-4 mb-2"><strong>Status:</strong><br />@Model.Owner.Owner_civil_status</div>
-                    <div class="col-md-4 mb-2"><strong>Education:</strong><br />@Model.Owner.Owner_education</div>
-                    <div class="col-md-8 mb-2"><strong>Address:</strong><br />@Model.Owner.Owner_address</div>
                 </div>
             </div>
 
@@ -92,6 +88,7 @@
         }
         else
         {
+            @* Form Input Section *@
             <div class="card mb-4 shadow-sm">
                 <div class="card-header bg-primary text-white fw-bold">Loan Details</div>
                 <div class="card-body row">
@@ -132,7 +129,7 @@
                 <div class="card-body row">
                     <div class="col-md-4 mb-3">
                         <label asp-for="Business.Business_tin_no" class="form-label">Business TIN</label>
-                        <input asp-for="Business.Business_tin_no" class="form-control" />
+                        <input asp-for="Business.Business_tin_no" class="form-control" placeholder="XXX-XXX-XXX" />
                         <span asp-validation-for="Business.Business_tin_no" class="text-danger small"></span>
                     </div>
                     <div class="col-md-4 mb-3">
@@ -152,17 +149,17 @@
                     </div>
                     <div class="col-md-4 mb-3">
                         <label asp-for="Business.Office_zip" class="form-label">Office Zip</label>
-                        <input asp-for="Business.Office_zip" class="form-control" />
+                        <input asp-for="Business.Office_zip" class="form-control" placeholder="XXXX" />
                         <span asp-validation-for="Business.Office_zip" class="text-danger small"></span>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label asp-for="Business.Business_landline" class="form-label">Landline</label>
-                        <input asp-for="Business.Business_landline" class="form-control" />
+                        <input asp-for="Business.Business_landline" class="form-control" placeholder="02-XXXX-XXXX" />
                         <span asp-validation-for="Business.Business_landline" class="text-danger small"></span>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label asp-for="Business.Business_mobile_no" class="form-label">Mobile Number</label>
-                        <input asp-for="Business.Business_mobile_no" class="form-control" />
+                        <input asp-for="Business.Business_mobile_no" class="form-control" placeholder="09XXXXXXXXX" />
                         <span asp-validation-for="Business.Business_mobile_no" class="text-danger small"></span>
                     </div>
                     <div class="col-md-4 mb-3">
@@ -186,11 +183,24 @@
                         <input asp-for="Owner.Owner_name" class="form-control" />
                         <span asp-validation-for="Owner.Owner_name" class="text-danger small"></span>
                     </div>
+                    
+                   
                     <div class="col-md-6 mb-3">
                         <label asp-for="Owner.Owner_tin_no" class="form-label">Owner TIN</label>
-                        <input asp-for="Owner.Owner_tin_no" class="form-control" />
+
+                        @if (string.IsNullOrEmpty(Model.Owner?.Owner_tin_no))
+                        {
+                            <input asp-for="Owner.Owner_tin_no" class="form-control" placeholder="XXX-XXX-XXX" />
+                        }
+                        else
+                        {
+                            <input asp-for="Owner.Owner_tin_no" class="form-control bg-light" readonly />
+                            <small class="text-muted"><i class="bi bi-lock-fill"></i> Locked to profile.</small>
+                        }
+
                         <span asp-validation-for="Owner.Owner_tin_no" class="text-danger small"></span>
                     </div>
+
                     <div class="col-md-3 mb-3">
                         <label asp-for="Owner.Owner_gender" class="form-label">Gender</label>
                         <select asp-for="Owner.Owner_gender" class="form-select">
@@ -221,6 +231,7 @@
                         </select>
                         <span asp-validation-for="Owner.Owner_civil_status" class="text-danger small"></span>
                     </div>
+                    
                     <div class="col-md-8 mb-3">
                         <label asp-for="Owner.Owner_address" class="form-label">Home Address</label>
                         <input asp-for="Owner.Owner_address" class="form-control" />
@@ -231,30 +242,19 @@
                         <input asp-for="Owner.Owner_place_of_birth" class="form-control" />
                         <span asp-validation-for="Owner.Owner_place_of_birth" class="text-danger small"></span>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="Owner.Owner_landline" class="form-label">Landline</label>
-                        <input asp-for="Owner.Owner_landline" class="form-control" />
-                        <span asp-validation-for="Owner.Owner_landline" class="text-danger small"></span>
-                    </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         <label asp-for="Owner.Owner_mobile_no" class="form-label">Mobile Number</label>
-                        <input asp-for="Owner.Owner_mobile_no" class="form-control" />
+                        <input asp-for="Owner.Owner_mobile_no" class="form-control" placeholder="09XXXXXXXXX" />
                         <span asp-validation-for="Owner.Owner_mobile_no" class="text-danger small"></span>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="Owner.Owner_email_address" class="form-label">Email Address</label>
-                        <input asp-for="Owner.Owner_email_address" class="form-control" type="email" />
-                        <span asp-validation-for="Owner.Owner_email_address" class="text-danger small"></span>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="Owner.Owner_landline" class="form-label">Landline</label>
+                        <input asp-for="Owner.Owner_landline" class="form-control" placeholder="02-XXXX-XXXX" />
+                        <span asp-validation-for="Owner.Owner_landline" class="text-danger small"></span>
                     </div>
-                    <div class="col-md-12 mb-3">
+                    <div class="col-md-3 mb-3">
                         <label asp-for="Owner.Owner_education" class="form-label">Educational Attainment</label>
-                        <select asp-for="Owner.Owner_education" class="form-select">
-                            <option value="">-- Select Education --</option>
-                            <option value="High School">High School</option>
-                            <option value="College">College</option>
-                            <option value="Post-Graduate">Post-Graduate</option>
-                            <option value="Technical/Vocational">Technical/Vocational</option>
-                        </select>
+                        <input asp-for="Owner.Owner_education" class="form-control" />
                         <span asp-validation-for="Owner.Owner_education" class="text-danger small"></span>
                     </div>
                 </div>

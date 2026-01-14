@@ -182,44 +182,6 @@ namespace LoanBee.Controllers
             return View(model);
         }
 
-        // GET: /LoanBee/ReadLoanApplication
-        [HttpGet]
-        public IActionResult ReadLoanApplication(string ownerTin)
-        {
-            if (string.IsNullOrEmpty(ownerTin))
-            {
-                return View(new List<Application>());
-            }
-
-            // Filter applications based on Owner TIN via the Business relationship
-            var applications = _context.Applications
-                .Include(a => a.Business)
-                .Where(a => a.Business.Owner_tin_no == ownerTin)
-                .ToList();
-
-            ViewBag.OwnerTin = ownerTin;
-            return View(applications);
-        }
-
-        // GET: /LoanBee/ReadLoanApplicationDetails
-        public async Task<IActionResult> ReadLoanApplicationDetails(Guid id)
-        {
-            // Eager load all related entities for the detailed view
-            var application = await _context.Applications
-                .Include(a => a.Business)
-                .Include(a => a.BankAccount)
-                .Include(a => a.Business.Owner)
-                .FirstOrDefaultAsync(a => a.Application_no == id);
-
-            if (application == null)
-            {
-                return NotFound();
-            }
-
-            return View(application);
-        }
-
-        // GET: LoanBee/ViewAllApplications
         public async Task<IActionResult> ViewAllApplications(string status = "All")
         {
             var userIdString = HttpContext.Session.GetString("UserId");
@@ -235,7 +197,7 @@ namespace LoanBee.Controllers
                 .Include(a => a.Business)
                 .Where(a => a.Owner.UserId == userId);
 
-            // SIMPLE FILTER: Match the database string exactly to the status parameter
+            // Apply the filter (e.g., if status is "Rejected", it matches "Rejected" in DB)
             if (status != "All")
             {
                 query = query.Where(a => a.Application_status == status);
@@ -245,17 +207,22 @@ namespace LoanBee.Controllers
             return View(applications);
         }
 
-        // GET: LoanBee/ApplicationDetails/guid
         public async Task<IActionResult> ApplicationDetails(Guid id)
         {
+            // Eager load all related entities so the View has access to all properties
             var application = await _context.Applications
-                .Include(a => a.Business)   // Eager Load Business
-                .Include(a => a.Owner)      // Eager Load Owner
-                .Include(a => a.BankAccount) // Eager Load Bank
+                .Include(a => a.Business)   // Loads Business info (Name, TIN, etc.)
+                .Include(a => a.Owner)      // Loads Owner info (Name, Gender, etc.)
+                .Include(a => a.BankAccount) // Loads Bank info (Type, Account No)
                 .FirstOrDefaultAsync(a => a.Application_no == id);
 
-            if (application == null) return NotFound();
+            // If the ID doesn't exist in the database, return a 404
+            if (application == null)
+            {
+                return NotFound();
+            }
 
+            // Pass the populated application object to your .cshtml view
             return View(application);
         }
 
