@@ -4,6 +4,8 @@
 
 @model LoanBee.Areas.Admin.Models.AdminLoanApplicationsVm
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
 <div class="container-fluid mt-4">
     <div class="d-flex align-items-center justify-content-between mb-3">
         <div>
@@ -16,7 +18,6 @@
         <div class="row g-2">
             <div class="col-md-8">
                 <div class="input-group">
-                    @* <span class="input-group-text">🔎</span> *@
                     <input name="query"
                            id="searchInput"
                            class="form-control"
@@ -25,17 +26,16 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <select name="status" id="statusFilter" class="form-select" onchange="this.form.submit()">
                     <option value="">All Statuses</option>
-                    @* <option value="Pending" selected="@(Model.Status == "Pending")">Pending</option> *@
                     <option value="Approved" selected="@(Model.Status == "Approved")">Approved</option>
                     <option value="Rejected" selected="@(Model.Status == "Rejected")">Rejected</option>
                     <option value="Under Review" selected="@(Model.Status == "Under Review")">Under Review</option>
                 </select>
             </div>
 
-            <div class="col-12">
+            <div class="col-md-2">
                 <a class="btn btn-outline-secondary"
                    href="@Url.Action("Index", "Home", new { area = "Admin" })">
                     Clear All Filters
@@ -44,20 +44,20 @@
         </div>
     </form>
 
-    <div class="card shadow-sm">
+    <div class="card shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0 align-middle">
-                    <thead class="table-light">
+                    <thead class="table-light justify-content-start">
                         <tr>
-                            <th>Application ID</th>
+                            <th>Application Number</th>
                             <th>Applicant</th>
                             <th>Amount</th>
                             <th>Tenor</th>
                             <th>Purpose</th>
                             <th>Date Applied</th>
                             <th>Status</th>
-                            <th style="width:160px;">Actions</th>
+                            <th style="width:110px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,43 +75,56 @@
                             {
                                 var badgeClass = r.Status switch
                                 {
-                                    "Approved" => "bg-success",
-                                    "Rejected" => "bg-danger",
+                                    "Approved" => "bg-success text-white",
                                     "Under Review" => "bg-warning text-dark",
-                                    _ => "bg-secondary"
+                                    "Rejected" => "bg-danger text-white", // Added red badge for Rejected status
+                                    "Completed" => "bg-light text-dark border",
+                                    _ => "bg-info text-white"
                                 };
 
                                 <tr>
-                                    <td class="text-truncate" style="max-width:260px;">
-                                        @r.ApplicationNo
-                                    </td>
-                                    <td>@r.ApplicantName</td>
-                                    <td>@r.Amount</td>
+                                    <td class="ps-4 fw-bold">@r.ApplicationNo.ToString().ToUpper().Substring(0, 8)</td>
+                                    <td class="fw-bold">@r.ApplicantName</td>
+                                    <td class="fw-bold">@r.Amount.ToString("C0", new System.Globalization.CultureInfo("en-PH"))</td>
                                     <td>@r.Tenor</td>
                                     <td>@r.Purpose</td>
                                     <td>@r.DateApplied.ToString("yyyy-MM-dd")</td>
-                                    <td>
-                                        <span class="badge @badgeClass">@r.Status</span>
-                                    </td>
-                                    <td class="d-flex gap-2">
-                                        <a class="btn btn-sm btn-outline-primary"
-                                           href="@Url.Action("Details", "Home", new { area = "Admin", id = r.ApplicationNo })">
-                                            View
-                                        </a>
-                                        <a class="btn btn-sm btn-outline-success"
-                                           href="@Url.Action("Update", "Home",
-                                                   new { area = "Admin", id = r.ApplicationNo })">
-                                            Update
-                                        </a>
-                                        @if (r.Status == "Rejected" || r.Status == "Completed")
-                                        {
-                                            <a class="btn btn-sm btn-outline-danger"
-                                               href="@Url.Action("Delete", "Home", new { area = "Admin", id = r.ApplicationNo })">
-                                                Delete
-                                            </a>
-                                        }
 
+                                    <td>
+                                        <span class="badge @badgeClass rounded-pill px-3 py-2" style="min-width: 110px;">
+                                            @r.Status
+                                        </span>
                                     </td>
+                                    <td class="text-center" style="min-width: 120px;">
+                                        <div class="d-flex justify-content-start gap-3">
+                                            <a href="@Url.Action("Details", "Home", new { area = "Admin", id = r.ApplicationNo })"
+                                               class="text-primary fs-5"
+                                               title="View">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+
+                                            <a href="@Url.Action("Update", "Home", new { area = "Admin", id = r.ApplicationNo })"
+                                               class="text-success fs-5"
+                                               title="Update">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            @if (r.Status == "Rejected" || r.Status == "Completed")
+                                            {
+                                                <a href="@Url.Action("Delete", "Home", new { area = "Admin", id = r.ApplicationNo })"
+                                                   class="text-danger fs-5"
+                                                   title="Delete">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <span style="width: 1.25rem;"></span>
+                                            }
+
+                                        </div>
+                                    </td>
+
                                 </tr>
                             }
                         }
