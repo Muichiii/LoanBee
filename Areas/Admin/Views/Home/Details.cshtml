@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "Application Details";
+}
+
+@model LoanBee.Areas.Admin.Models.AdminLoanApplicationDetailsVm
+
+<div class="container py-4">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <div>
+            <h2 class="mb-0">Application Details</h2>
+            <div class="text-muted small">@Model.ApplicationNo</div>
+        </div>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-secondary"
+               href="@Url.Action("Index", "Home", new { area = "Admin" })">Back</a>
+        </div>
+    </div>
+
+    @{
+        var badgeClass = Model.Status switch
+        {
+            "Approved" => "bg-success",
+            "Rejected" => "bg-danger",
+            "Under Review" => "bg-warning text-dark",
+            _ => "bg-secondary"
+        };
+    }
+
+    <div class="row g-3">
+
+        <!-- Loan Info -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header fw-semibold">Loan Information</div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-4">Status</dt>
+                        <dd class="col-8"><span class="badge @badgeClass">@Model.Status</span></dd>
+
+                        <dt class="col-4">Date Applied</dt>
+                        <dd class="col-8">@Model.DateApplied.ToString("yyyy-MM-dd")</dd>
+
+                        <dt class="col-4">Amount</dt>
+                        <dd class="col-8">@Model.Amount</dd>
+
+                        <dt class="col-4">Tenor</dt>
+                        <dd class="col-8">@Model.Tenor</dd>
+
+                        <dt class="col-4">Purpose</dt>
+                        <dd class="col-8">@Model.Purpose</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bank Account -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header fw-semibold">Selected Bank Account</div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-4">Account No</dt>
+                        <dd class="col-8">@Model.AccountNo</dd>
+
+                        <dt class="col-4">Type</dt>
+                        <dd class="col-8">@Model.AccountType</dd>
+
+                        <dt class="col-4">Relationship Since</dt>
+                        <dd class="col-8">@Model.RelationshipSince</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Owner -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header fw-semibold">Borrower (Owner)</div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-4">Name</dt>
+                        <dd class="col-8">@Model.OwnerName</dd>
+                        <dt class="col-4">TIN</dt>
+                        <dd class="col-8">@Model.OwnerTin</dd>
+                        <dt class="col-4">Gender</dt>
+                        <dd class="col-8">@Model.OwnerGender</dd>
+                        <dt class="col-4">Birthday</dt>
+                        <dd class="col-8">@Model.OwnerBirthday.ToString("yyyy-MM-dd")</dd>
+                        <dt class="col-4">Citizenship</dt>
+                        <dd class="col-8">@Model.OwnerCitizenship</dd>
+                        <dt class="col-4">Civil Status</dt>
+                        <dd class="col-8">@Model.OwnerCivilStatus</dd>
+                        <dt class="col-4">Email</dt>
+                        <dd class="col-8">@Model.OwnerEmail</dd>
+                        <dt class="col-4">Mobile</dt>
+                        <dd class="col-8">@Model.OwnerMobile</dd>
+                        <dt class="col-4">Landline</dt>
+                        <dd class="col-8">@Model.OwnerLandline</dd>
+                        <dt class="col-4">Address</dt>
+                        <dd class="col-8">@Model.OwnerAddress</dd>
+                        <dt class="col-4">Place of Birth</dt>
+                        <dd class="col-8">@Model.OwnerPlaceOfBirth</dd>
+                        <dt class="col-4">Education</dt>
+                        <dd class="col-8">@Model.OwnerEducation</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header fw-semibold">Business Information</div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-4">Name</dt>
+                        <dd class="col-8">@Model.BusinessName</dd>
+                        <dt class="col-4">TIN</dt>
+                        <dd class="col-8">@Model.BusinessTin</dd>
+                        <dt class="col-4">Type</dt>
+                        <dd class="col-8">@Model.BusinessType</dd>
+                        <dt class="col-4">Email</dt>
+                        <dd class="col-8">@Model.BusinessEmail</dd>
+                        <dt class="col-4">Mobile</dt>
+                        <dd class="col-8">@Model.BusinessMobile</dd>
+                        <dt class="col-4">Landline</dt>
+                        <dd class="col-8">@Model.BusinessLandline</dd>
+                        <dt class="col-4">Website</dt>
+                        <dd class="col-8">@Model.BusinessWebsite</dd>
+                        <dt class="col-4">Office Address</dt>
+                        <dd class="col-8">@Model.OfficeAddress</dd>
+                        <dt class="col-4">Office Zip</dt>
+                        <dd class="col-8">@Model.OfficeZip</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
