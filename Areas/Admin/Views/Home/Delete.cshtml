@@ -1,0 +1,47 @@
+﻿@model LoanBee.Areas.Admin.Models.AdminDeleteApplicationVm
+@{
+    ViewData["Title"] = "Delete Application";
+}
+
+<div class="container py-4">
+    <h2 class="mb-2 text-danger">Delete Loan Application</h2>
+    <p class="text-muted mb-4">This action cannot be undone.</p>
+
+    <div class="card shadow-sm border-danger">
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-4">Application No</dt>
+                <dd class="col-8">@Model.ApplicationNo</dd>
+
+                <dt class="col-4">Status</dt>
+                <dd class="col-8"><span class="badge bg-secondary">@Model.Status</span></dd>
+
+                <dt class="col-4">Date Applied</dt>
+                <dd class="col-8">@Model.DateApplied.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-4">Amount</dt>
+                <dd class="col-8">@Model.Amount</dd>
+
+                <dt class="col-4">Tenor</dt>
+                <dd class="col-8">@Model.Tenor</dd>
+
+                <dt class="col-4">Purpose</dt>
+                <dd class="col-8">@Model.Purpose</dd>
+            </dl>
+
+            <hr />
+
+            <form asp-action="Delete" method="post" class="d-flex gap-2">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="ApplicationNo" />
+
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+
+                <a class="btn btn-outline-secondary"
+                   href="@Url.Action("Details", "Home", new { area = "Admin", id = Model.ApplicationNo })">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
