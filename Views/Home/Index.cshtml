@@ -13,6 +13,9 @@
         <a asp-controller="LoanBee" asp-action="CreateLoanApplication" class="btn btn-primary btn-lg shadow-sm">
             + New Application
         </a>
+        <a asp-controller="LoanBee" asp-action="ViewAllApplications" class="btn btn-outline-primary btn-lg shadow-sm">
+            View All Applications
+        </a>
     </div>
 
     @if (Model == null)
@@ -52,8 +55,8 @@
                         <span>@Model.Owner_mobile_no</span>
                     </div>
                     <div class="col-md-4">
-                        <small class="text-muted d-block text-uppercase fw-bold">Education</small>
-                        <span>@Model.Owner_education</span>
+                        <small class="text-muted d-block text-uppercase fw-bold">Landline</small>
+                        <span>@Model.Owner_landline</span>
                     </div>
                 </div>
             </div>

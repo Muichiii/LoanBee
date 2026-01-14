@@ -1,0 +1,82 @@
+﻿@model LoanBee.Models.Entities.Application
+
+@{
+    ViewData["Title"] = "Application Details";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Comprehensive Loan Record</h2>
+        <a asp-action="ViewAllApplications" class="btn btn-outline-secondary shadow-sm">
+            <i class="bi bi-arrow-left"></i> Back to Tracking
+        </a>
+    </div>
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-3">
+            <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i>Loan Details</h5>
+        </div>
+        <div class="card-body row">
+            <div class="col-md-3 mb-3"><strong>Date Submitted:</strong><br />@Model.Application_date.ToShortDateString()</div>
+            <div class="col-md-3 mb-3">
+                <strong>Status:</strong><br />
+                <span class="badge @(Model.Application_status == "Under Review" ? "bg-warning text-dark" : "bg-success")">
+                    @Model.Application_status
+                </span>
+            </div>
+            <div class="col-md-3 mb-3"><strong>Amount:</strong><br />@Model.Loan_amount.ToString("C", new System.Globalization.CultureInfo("en-PH"))</div>
+            <div class="col-md-3 mb-3"><strong>Tenor:</strong><br />@Model.Loan_tenor Months</div>
+        </div>
+    </div>
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-secondary text-white py-3">
+            <h5 class="mb-0"><i class="bi bi-building me-2"></i>Business Information</h5>
+        </div>
+        <div class="card-body row">
+            <div class="col-md-4 mb-3"><strong>Business Name:</strong><br />@Model.Business?.Business_name</div>
+            <div class="col-md-4 mb-3"><strong>Business TIN:</strong><br />@Model.Business_tin_no</div>
+            <div class="col-md-4 mb-3"><strong>Business Type:</strong><br />@Model.Business?.Business_type</div>
+
+            <div class="col-md-8 mb-3"><strong>Office Address:</strong><br />@Model.Business?.Office_address</div>
+            <div class="col-md-4 mb-3"><strong>Office Zip:</strong><br />@Model.Business?.Office_zip</div>
+
+            <div class="col-md-4 mb-3"><strong>Mobile Number:</strong><br />@Model.Business?.Business_mobile_no</div>
+            <div class="col-md-4 mb-3"><strong>Email:</strong><br />@Model.Business?.Business_email</div>
+            <div class="col-md-4 mb-3">
+                <strong>Website:</strong><br />
+                <a href="@Model.Business?.Business_website" target="_blank">@Model.Business?.Business_website</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4 shadow-sm border-0">
+        <div class="card-header bg-info text-white py-3">
+            <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Owner Information</h5>
+        </div>
+        <div class="card-body row">
+            <div class="col-md-4 mb-3"><strong>Full Name:</strong><br />@Model.Owner?.Owner_name</div>
+            <div class="col-md-4 mb-3"><strong>Owner TIN:</strong><br />@Model.Owner_tin_no</div>
+            <div class="col-md-2 mb-3"><strong>Civil Status:</strong><br />@Model.Owner?.Owner_civil_status</div>
+            <div class="col-md-2 mb-3"><strong>Birthday:</strong><br />@Model.Owner?.Owner_birthday.ToShortDateString()</div>
+
+            <div class="col-md-4 mb-3"><strong>Citizenship:</strong><br />@Model.Owner?.Owner_citizenship</div>
+            <div class="col-md-8 mb-3"><strong>Home Address:</strong><br />@Model.Owner?.Owner_address</div>
+
+            <div class="col-md-4 mb-3"><strong>Education:</strong><br />@Model.Owner?.Owner_education</div>
+            <div class="col-md-4 mb-3"><strong>Mobile Number:</strong><br />@Model.Owner?.Owner_mobile_no</div>
+            <div class="col-md-4 mb-3"><strong>Email Address:</strong><br />@Model.Owner?.Owner_email_address</div>
+        </div>
+    </div>
+
+    <div class="card mb-5 shadow-sm border-0">
+        <div class="card-header bg-dark text-white py-3">
+            <h5 class="mb-0"><i class="bi bi-bank me-2"></i>Bank Account Details</h5>
+        </div>
+        <div class="card-body row text-center">
+            <div class="col-md-4"><strong>Account Number:</strong><br />@Model.Account_no</div>
+            <div class="col-md-4 border-start border-end"><strong>Account Type:</strong><br />@Model.BankAccount?.Account_type</div>
+            <div class="col-md-4"><strong>Relationship Since:</strong><br />@Model.BankAccount?.Relationship_since</div>
+        </div>
+    </div>
+</div>

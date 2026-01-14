@@ -1,0 +1,123 @@
+﻿@model IEnumerable<LoanBee.Models.Entities.Application>
+
+@{
+    ViewData["Title"] = "Loan Applications";
+    var currentFilter = ViewBag.CurrentFilter ?? "All";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+            <h1 class="fw-bold mb-0">Loan Applications</h1>
+            <p class="text-muted">Manage and track all your loan applications</p>
+        </div>
+        <a asp-action="CreateLoanApplication" class="btn btn-warning text-white fw-bold px-4 py-2 shadow-sm" style="border-radius: 8px;">
+            <i class="bi bi-plus-lg"></i> New Application
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
+        <div class="card-body">
+            <ul class="nav nav-pills">
+                @{
+                    string[] statuses = { "All", "Approved", "Under Review", "Completed" };
+                }
+
+                @foreach (var s in statuses)
+                {
+                    <li class="nav-item me-2">
+                        <a asp-action="ViewAllApplications"
+                           asp-route-status="@s"
+                           class="nav-link px-4 @(currentFilter == s ? "bg-warning text-white shadow-sm" : "text-dark")"
+                           style="font-weight: 500; border-radius: 8px;">
+                            @s
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="bg-light text-muted" style="font-size: 0.85rem; text-transform: uppercase;">
+                        <tr>
+                            <th class="ps-4 py-3 border-0">Application Number</th>
+                            <th class="border-0">Business TIN</th>
+                            <th class="border-0">Loan Amount</th>
+                            <th class="border-0">Tenor</th>
+                            <th class="border-0">Date Applied</th>
+                            <th class="border-0">Status</th>
+                            <th class="text-center border-0 pe-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center py-5 text-muted">
+                                    No applications found matching "@currentFilter"
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var app in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4 fw-bold">@app.Application_no.ToString().ToUpper().Substring(0, 8)</td>
+                                    <td class="text-muted">@app.Business_tin_no</td>
+                                    <td class="fw-bold">@app.Loan_amount.ToString("C0", new System.Globalization.CultureInfo("en-PH"))</td>
+                                    <td>@app.Loan_tenor months</td>
+                                    <td>@app.Application_date.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        @{
+                                            var badgeClass = app.Application_status switch
+                                            {
+                                                "Approved" => "bg-success text-white",
+                                                "Under Review" => "bg-warning text-dark",
+                                                "Completed" => "bg-light text-dark border",
+                                                _ => "bg-info text-white"
+                                            };
+                                        }
+                                        <span class="badge @badgeClass rounded-pill px-3 py-2" style="min-width: 110px;">
+                                            @app.Application_status
+                                        </span>
+                                    </td>
+                                    <td class="text-center pe-4">
+                                        <a asp-controller="LoanBee"
+                                           asp-action="ApplicationDetails"
+                                           asp-route-id="@app.Application_no"
+                                           class="text-warning fs-5"
+                                           title="View Details">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .table tbody tr:hover {
+        background-color: #fafafa;
+        transition: 0.2s;
+    }
+
+    .nav-link:hover:not(.bg-warning) {
+        background-color: #eee;
+    }
+</style>

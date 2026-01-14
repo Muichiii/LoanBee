@@ -219,6 +219,46 @@ namespace LoanBee.Controllers
             return View(application);
         }
 
+        // GET: LoanBee/ViewAllApplications
+        public async Task<IActionResult> ViewAllApplications(string status = "All")
+        {
+            var userIdString = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out Guid userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ViewBag.CurrentFilter = status;
+
+            var query = _context.Applications
+                .Include(a => a.Owner)
+                .Include(a => a.Business)
+                .Where(a => a.Owner.UserId == userId);
+
+            // SIMPLE FILTER: Match the database string exactly to the status parameter
+            if (status != "All")
+            {
+                query = query.Where(a => a.Application_status == status);
+            }
+
+            var applications = await query.OrderByDescending(a => a.Application_date).ToListAsync();
+            return View(applications);
+        }
+
+        // GET: LoanBee/ApplicationDetails/guid
+        public async Task<IActionResult> ApplicationDetails(Guid id)
+        {
+            var application = await _context.Applications
+                .Include(a => a.Business)   // Eager Load Business
+                .Include(a => a.Owner)      // Eager Load Owner
+                .Include(a => a.BankAccount) // Eager Load Bank
+                .FirstOrDefaultAsync(a => a.Application_no == id);
+
+            if (application == null) return NotFound();
+
+            return View(application);
+        }
+
 
     }
 }
