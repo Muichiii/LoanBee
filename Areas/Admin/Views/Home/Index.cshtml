@@ -9,7 +9,7 @@
 <div class="container-fluid mt-4">
     <div class="d-flex align-items-center justify-content-between mb-3">
         <div>
-            <h3 class="mb-0">Loan Applications</h3>
+            <h2 class="mb-0">Loan Applications</h2>
             <small class="text-muted">Manage and review all loan applications</small>
         </div>
     </div>
@@ -31,6 +31,7 @@
                     <option value="">All Statuses</option>
                     <option value="Approved" selected="@(Model.Status == "Approved")">Approved</option>
                     <option value="Rejected" selected="@(Model.Status == "Rejected")">Rejected</option>
+                    <option value="Completed" selected="@(Model.Status == "Completed")">Completed</option>
                     <option value="Under Review" selected="@(Model.Status == "Under Review")">Under Review</option>
                 </select>
             </div>

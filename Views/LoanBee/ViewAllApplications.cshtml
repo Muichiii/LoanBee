@@ -10,10 +10,10 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <div>
-            <h1 class="fw-bold mb-0">Loan Applications</h1>
+            <h2 class="fw-bold mb-0">Loan Applications</h2>
             <p class="text-muted">Manage and track all your loan applications</p>
         </div>
-        <a asp-action="CreateLoanApplication" class="btn btn-warning text-white fw-bold px-4 py-2 shadow-sm" style="border-radius: 8px;">
+        <a asp-action="CreateLoanApplication" class="btn btn-primary text-white fw-bold px-4 py-2 shadow-sm" style="border-radius: 8px;">
             <i class="bi bi-plus-lg"></i> New Application
         </a>
     </div>
@@ -31,7 +31,7 @@
                     <li class="nav-item me-2">
                         <a asp-action="ViewAllApplications"
                            asp-route-status="@s"
-                           class="nav-link px-4 @(currentFilter == s ? "bg-warning text-white shadow-sm" : "text-dark")"
+                           class="nav-link px-4 @(currentFilter == s ? "bg-primary text-white shadow-sm" : "text-dark")"
                            style="font-weight: 500; border-radius: 8px;">
                             @s
                         </a>

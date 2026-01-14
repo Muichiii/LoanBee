@@ -10,12 +10,20 @@
             <h1 class="fw-bold">Welcome back, @(ViewBag.UserName ?? "User")!</h1>
             <p class="text-muted">Here's your loan management overview</p>
         </div>
-        <a asp-controller="LoanBee" asp-action="CreateLoanApplication" class="btn btn-primary btn-lg shadow-sm">
-            + New Application
-        </a>
-        <a asp-controller="LoanBee" asp-action="ViewAllApplications" class="btn btn-outline-primary btn-lg shadow-sm">
-            View All Applications
-        </a>
+        <div class="d-flex gap-3">
+            <a asp-controller="LoanBee"
+               asp-action="CreateLoanApplication"
+               class="btn btn-primary text-white btn-lg shadow-sm">
+                + New Application
+            </a>
+
+            <a asp-controller="LoanBee"
+               asp-action="ViewAllApplications"
+               class="btn btn-outline-primary btn-lg shadow-sm btn-outline-warning-white">
+                View All Applications
+            </a>
+
+        </div>
     </div>
 
     @if (Model == null)
@@ -83,17 +91,18 @@
                                     @foreach (var app in Model.Applications.Where(a => a.Application_status != "Completed").OrderByDescending(a => a.Application_date))
                                     {
                                         <tr>
-                                            <td class="ps-3 fw-bold">@app.Loan_amount.ToString("C")</td>
+                                            <td class="ps-3 fw-bold">@app.Loan_amount.ToString("C0", new System.Globalization.CultureInfo("en-PH"))</td>
                                             <td>@app.Loan_tenor</td>
                                             <td>@app.Application_date.ToString("yyyy-MM-dd")</td>
                                             <td class="text-center">
                                                 @{
                                                     var badgeClass = app.Application_status switch
                                                     {
-                                                        "Approved" => "bg-success",
-                                                        "Pending" => "bg-warning text-dark",
-                                                        "Rejected" => "bg-danger",
-                                                        _ => "bg-secondary"
+                                                        "Approved" => "bg-success text-white",
+                                                        "Under Review" => "bg-warning text-dark",
+                                                        "Rejected" => "bg-danger text-white", // Added red badge for Rejected status
+                                                        "Completed" => "bg-light text-dark border",
+                                                        _ => "bg-info text-white"
                                                     };
                                                 }
                                                 <span class="badge @badgeClass rounded-pill px-3">@app.Application_status</span>
@@ -149,4 +158,14 @@
     .card { border-radius: 12px; }
     .card-header { border-bottom: 1px solid #f0f0f0; }
     .table thead th { font-size: 0.85rem; color: #6c757d; }
+
+    /* .btn-outline-warning-white {
+        color: #fff;
+        border-color: #ffc107;
+    } */
+
+        .btn-outline-warning-white:hover {
+            background-color: #007bff;
+            color: white; /* Bootstrap dark text */
+        }
 </style>

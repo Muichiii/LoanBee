@@ -20,10 +20,11 @@
     @{
         var badgeClass = Model.Status switch
         {
-            "Approved" => "bg-success",
-            "Rejected" => "bg-danger",
+            "Approved" => "bg-success text-white",
             "Under Review" => "bg-warning text-dark",
-            _ => "bg-secondary"
+            "Rejected" => "bg-danger text-white", // Added red badge for Rejected status
+            "Completed" => "bg-light text-dark border",
+            _ => "bg-info text-white"
         };
     }
 
@@ -32,7 +33,7 @@
         <!-- Loan Info -->
         <div class="col-lg-6">
             <div class="card shadow-sm">
-                <div class="card-header fw-semibold">Loan Information</div>
+                <div class="card-header fw-bold bg-primary text-white py-3">Loan Details</div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-4">Status</dt>
@@ -57,7 +58,7 @@
         <!-- Bank Account -->
         <div class="col-lg-6">
             <div class="card shadow-sm">
-                <div class="card-header fw-semibold">Selected Bank Account</div>
+                <div class="card-header fw-bold bg-dark text-white py-3">Bank Account Details</div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-4">Account No</dt>
@@ -76,7 +77,7 @@
         <!-- Owner -->
         <div class="col-lg-6">
             <div class="card shadow-sm">
-                <div class="card-header fw-semibold">Borrower (Owner)</div>
+                <div class="card-header fw-bold bg-info text-white py-3">Owner Information</div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-4">Name</dt>
@@ -111,7 +112,7 @@
         <!-- Business -->
         <div class="col-lg-6">
             <div class="card shadow-sm">
-                <div class="card-header fw-semibold">Business Information</div>
+                <div class="card-header fw-bold bg-secondary text-white py-3">Business Information</div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-4">Name</dt>
