@@ -33,12 +33,21 @@ namespace LoanBee.Controllers
         public IActionResult Login(string email, string password)
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+
             if (user != null)
             {
-                
+                // Store user info in Session
                 HttpContext.Session.SetString("UserName", user.Name);
                 HttpContext.Session.SetString("UserId", user.Id.ToString());
 
+                // Check if the user is the admin
+                if (user.Email == "admin@gmail.com" && user.Password == "admin123")
+                {
+                    // Redirect to the Index action of the HomeController inside the Admin Area
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                }
+
+                // Default redirect for regular users
                 return RedirectToAction("Index", "Home");
             }
 
