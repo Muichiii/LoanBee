@@ -25,7 +25,17 @@
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <small class="text-muted d-block mb-2" style="font-size: 0.85rem;">Status</small>
-                    <span class="badge @(Model.Application_status == "Under Review" ? "bg-warning text-dark" : "bg-success") p-2" style="font-size: 0.9rem;">
+                    <span class="status-badge rounded-pill px-3 py-2
+                        @(
+                              Model.Application_status switch
+                              {
+                                  "Approved" => "badge-success",
+                                  "Under Review" => "badge-warning",
+                                  "Rejected" => "badge-danger",
+                                  "Completed" => "bg-light text-dark border",
+                                  _ => "badge-info"
+                              }
+                          )">
                         @Model.Application_status
                     </span>
                 </div>
@@ -162,5 +172,42 @@
 <style>
     .loan-details-header {
         background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);
+    }
+
+    /* Status Badges */ 
+    .status-badge {
+        display: inline-block;
+        padding: 0.5rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+        min-width: 110px;
+    }
+
+    .badge-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .badge-warning {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .badge-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .badge-light {
+        background-color: var(--soft-gray);
+        color: var(--dark-charcoal);
     }
 </style>
