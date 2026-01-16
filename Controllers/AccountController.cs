@@ -41,7 +41,7 @@ namespace LoanBee.Controllers
                 HttpContext.Session.SetString("UserId", user.Id.ToString());
 
                 // Check if the user is the admin
-                if (user.Email == "admin@gmail.com" && user.Password == "admin123")
+                if (user.Email == "admin@gmail.com" && user.Password == "admin_123")
                 {
                     // Redirect to the Index action of the HomeController inside the Admin Area
                     return RedirectToAction("Index", "Home", new { area = "Admin" });
