@@ -45,9 +45,6 @@ namespace LoanBee.Controllers
         public async Task<IActionResult> CreateLoanApplication(LoanApplicationViewModel model, string submitButton)
         {
             // 1. NUCLEAR CLEANUP: Remove all system-generated and navigation properties
-            // This stops "Application_status", "Owner", and "Owner_tin_no" errors
-
-            // Application Structural Fields
             ModelState.Remove("Application.Application_status");
             ModelState.Remove("Application.Application_no");
             ModelState.Remove("Application.Application_date");
@@ -55,11 +52,12 @@ namespace LoanBee.Controllers
             ModelState.Remove("Application.Business_tin_no");
             ModelState.Remove("Application.Account_no");
 
-            // Navigation Objects (The "Owner" and "Business" links)
+            // Navigation Objects
             ModelState.Remove("Application.Owner");
             ModelState.Remove("Application.Business");
             ModelState.Remove("Application.BankAccount");
-            ModelState.Remove("Owner"); // The root Owner object in ViewModel
+            ModelState.Remove("Owner");
+            ModelState.Remove("User");
 
             // Owner Internal Links
             ModelState.Remove("Owner.UserId");
@@ -84,7 +82,13 @@ namespace LoanBee.Controllers
 
             if (submitButton == "Next")
             {
-                ViewBag.IsPreview = true;
+                if (ModelState.IsValid)
+                {
+                    ViewBag.IsPreview = true;
+                    return View(model);
+                }
+
+                ViewBag.IsPreview = false;
                 return View(model);
             }
 

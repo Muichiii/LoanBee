@@ -4,69 +4,83 @@
 
 @model LoanBee.Areas.Admin.Models.AdminUpdateStatusVm
 
-<div class="container py-4">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+<div class="container py-5">
+    <!-- Enhanced header with yellow theme -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-5 pb-3 border-bottom" style="border-color: #f4b41a !important;">
         <div>
-            <h2>Update Loan Application Status</h2>
-            <p class="text-muted">@Model.ApplicationNo</p>
+            <h1 class="mb-1 fw-bold" style="color: #2c3e50;">Update Application Status</h1>
+            <p class="text-muted mb-0">Reference: @Model.ApplicationNo</p>
         </div>
         <div class="d-flex gap-2">
-            <a class="btn btn-outline-secondary"
-               href="@Url.Action("Index", "Home", new { area = "Admin" })">Back</a>
+            <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Home", new { area = "Admin" })">
+                <i class="bi bi-arrow-left me-2"></i>Back
+            </a>
         </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-            <form asp-action="Update" method="post">
-                @Html.AntiForgeryToken()
-
-                <input type="hidden" asp-for="ApplicationNo" />
-                <input type="hidden" asp-for="CurrentStatus" />
-
-                <div class="mb-3">
-                    <label class="form-label">Current Status</label>
-                    <input class="form-control" value="@Model.CurrentStatus" disabled />
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0" style="border-radius: 10px;">
+                <div class="card-header fw-bold text-white py-3" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-pencil-square me-2"></i>Status Update
                 </div>
+                <div class="card-body" style="background-color: #fafafa;">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
 
-                <div class="mb-3">
-                    <label asp-for="NewStatus" class="form-label">New Status</label>
+                    <form asp-action="Update" method="post">
+                        @Html.AntiForgeryToken()
 
-                    @if (Model.CurrentStatus == "Under Review")
-                    {
-                        <select asp-for="NewStatus" class="form-select">
-                            <option value="Under Review">Under Review</option>
-                            <option value="Approved">Approved</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
-                    }
-                    else if (Model.CurrentStatus == "Approved")
-                    {
-                        <select asp-for="NewStatus" class="form-select">
-                            <option value="Approved">Approved</option>
-                            <option value="Completed">Completed</option>
-                        </select>
-                    }
-                    else
-                    {
-                        <select class="form-select" disabled>
-                            <option>@Model.CurrentStatus</option>
-                        </select>
-                        <small class="text-muted">
-                            This application can no longer be updated.
-                        </small>
-                    }
+                        <input type="hidden" asp-for="ApplicationNo" />
+                        <input type="hidden" asp-for="CurrentStatus" />
+
+                        <div class="mb-4">
+                            <label class="form-label">Current Status</label>
+                            <div class="input-group">
+                                <input class="form-control bg-light" value="@Model.CurrentStatus" disabled style="border-color: #ddd;" />
+                                <span class="input-group-text" style="background-color: #f4b41a; border: none;">
+                                    <i class="bi bi-check-circle text-white"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="NewStatus" class="form-label">New Status</label>
+
+                            @if (Model.CurrentStatus == "Under Review")
+                            {
+                                <select asp-for="NewStatus" class="form-select" style="border-color: #f4b41a;">
+                                    <option value="Under Review">Under Review</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            }
+                            else if (Model.CurrentStatus == "Approved")
+                            {
+                                <select asp-for="NewStatus" class="form-select" style="border-color: #f4b41a;">
+                                    <option value="Approved">Approved</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            }
+                            else
+                            {
+                                <select class="form-select" disabled style="border-color: #ddd;">
+                                    <option>@Model.CurrentStatus</option>
+                                </select>
+                                <small class="text-muted d-block mt-2">
+                                    <i class="bi bi-info-circle me-1"></i>This application cannot be further updated.
+                                </small>
+                            }
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-lg fw-bold text-white w-100"
+                                style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%); border: none;"
+                                @(Model.CurrentStatus == "Under Review" || Model.CurrentStatus == "Approved" ? "" : "disabled")>
+                            <i class="bi bi-save me-2"></i>Save Changes
+                        </button>
+                    </form>
                 </div>
-
-                <button type="submit"
-                        class="btn btn-primary"
-                        @(Model.CurrentStatus == "Under Review" || Model.CurrentStatus == "Approved"
-                                                ? "" : "disabled")>
-                    Save
-                </button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -74,3 +88,20 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<style>
+    .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .form-select:focus {
+        border-color: #f4b41a !important;
+        box-shadow: 0 0 0 0.2rem rgba(244, 180, 26, 0.15);
+    }
+
+    .form-control:focus {
+        border-color: #f4b41a !important;
+        box-shadow: 0 0 0 0.2rem rgba(244, 180, 26, 0.15);
+    }
+</style>

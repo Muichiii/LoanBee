@@ -4,16 +4,17 @@
 
 @model LoanBee.Areas.Admin.Models.AdminLoanApplicationDetailsVm
 
-<div class="container py-4">
-
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+<div class="container py-5">
+    <!-- Enhanced header with professional styling -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-5 pb-3 border-bottom" style="border-color: #f4b41a !important;">
         <div>
-            <h2 class="mb-0">Application Details</h2>
-            <div class="text-muted small">@Model.ApplicationNo</div>
+            <h1 class="mb-1 fw-bold" style="color: #2c3e50;">Application Details</h1>
+            <div class="text-muted small">Reference: @Model.ApplicationNo</div>
         </div>
         <div class="d-flex gap-2">
-            <a class="btn btn-outline-secondary"
-               href="@Url.Action("Index", "Home", new { area = "Admin" })">Back</a>
+            <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Home", new { area = "Admin" })">
+                <i class="bi bi-arrow-left me-2"></i>Back to List
+            </a>
         </div>
     </div>
 
@@ -22,34 +23,35 @@
         {
             "Approved" => "bg-success text-white",
             "Under Review" => "bg-warning text-dark",
-            "Rejected" => "bg-danger text-white", // Added red badge for Rejected status
+            "Rejected" => "bg-danger text-white",
             "Completed" => "bg-light text-dark border",
             _ => "bg-info text-white"
         };
     }
 
-    <div class="row g-3">
-
+    <div class="row g-4">
         <!-- Loan Info -->
         <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header fw-bold bg-primary text-white py-3">Loan Details</div>
-                <div class="card-body">
+            <div class="card shadow-sm border-0" style="border-radius: 10px;">
+                <div class="card-header fw-bold text-white py-3" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-cash-coin me-2"></i>Loan Details
+                </div>
+                <div class="card-body" style="background-color: #fafafa;">
                     <dl class="row mb-0">
-                        <dt class="col-4">Status</dt>
-                        <dd class="col-8"><span class="badge @badgeClass">@Model.Status</span></dd>
+                        <dt class="col-5 fw-bold">Status</dt>
+                        <dd class="col-7"><span class="badge @badgeClass">@Model.Status</span></dd>
 
-                        <dt class="col-4">Date Applied</dt>
-                        <dd class="col-8">@Model.DateApplied.ToString("yyyy-MM-dd")</dd>
+                        <dt class="col-5 fw-bold">Date Applied</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.DateApplied.ToString("yyyy-MM-dd")</dd>
 
-                        <dt class="col-4">Amount</dt>
-                        <dd class="col-8">@Model.Amount</dd>
+                        <dt class="col-5 fw-bold">Amount</dt>
+                        <dd class="col-7" style="color: #f4b41a; font-weight: 600;">@Model.Amount</dd>
 
-                        <dt class="col-4">Tenor</dt>
-                        <dd class="col-8">@Model.Tenor</dd>
+                        <dt class="col-5 fw-bold">Tenor</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.Tenor</dd>
 
-                        <dt class="col-4">Purpose</dt>
-                        <dd class="col-8">@Model.Purpose</dd>
+                        <dt class="col-5 fw-bold">Purpose</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.Purpose</dd>
                     </dl>
                 </div>
             </div>
@@ -57,18 +59,20 @@
 
         <!-- Bank Account -->
         <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header fw-bold bg-dark text-white py-3">Bank Account Details</div>
-                <div class="card-body">
+            <div class="card shadow-sm border-0" style="border-radius: 10px;">
+                <div class="card-header fw-bold text-white py-3" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-bank me-2"></i>Bank Account Details
+                </div>
+                <div class="card-body" style="background-color: #fafafa;">
                     <dl class="row mb-0">
-                        <dt class="col-4">Account No</dt>
-                        <dd class="col-8">@Model.AccountNo</dd>
+                        <dt class="col-5 fw-bold">Account No</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.AccountNo</dd>
 
-                        <dt class="col-4">Type</dt>
-                        <dd class="col-8">@Model.AccountType</dd>
+                        <dt class="col-5 fw-bold">Type</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.AccountType</dd>
 
-                        <dt class="col-4">Relationship Since</dt>
-                        <dd class="col-8">@Model.RelationshipSince</dd>
+                        <dt class="col-5 fw-bold">Relationship Since</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.RelationshipSince</dd>
                     </dl>
                 </div>
             </div>
@@ -76,34 +80,28 @@
 
         <!-- Owner -->
         <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header fw-bold bg-info text-white py-3">Owner Information</div>
-                <div class="card-body">
+            <div class="card shadow-sm border-0" style="border-radius: 10px;">
+                <div class="card-header fw-bold text-white py-3" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-person-fill me-2"></i>Owner Information
+                </div>
+                <div class="card-body" style="background-color: #fafafa;">
                     <dl class="row mb-0">
-                        <dt class="col-4">Name</dt>
-                        <dd class="col-8">@Model.OwnerName</dd>
-                        <dt class="col-4">TIN</dt>
-                        <dd class="col-8">@Model.OwnerTin</dd>
-                        <dt class="col-4">Gender</dt>
-                        <dd class="col-8">@Model.OwnerGender</dd>
-                        <dt class="col-4">Birthday</dt>
-                        <dd class="col-8">@Model.OwnerBirthday.ToString("yyyy-MM-dd")</dd>
-                        <dt class="col-4">Citizenship</dt>
-                        <dd class="col-8">@Model.OwnerCitizenship</dd>
-                        <dt class="col-4">Civil Status</dt>
-                        <dd class="col-8">@Model.OwnerCivilStatus</dd>
-                        <dt class="col-4">Email</dt>
-                        <dd class="col-8">@Model.OwnerEmail</dd>
-                        <dt class="col-4">Mobile</dt>
-                        <dd class="col-8">@Model.OwnerMobile</dd>
-                        <dt class="col-4">Landline</dt>
-                        <dd class="col-8">@Model.OwnerLandline</dd>
-                        <dt class="col-4">Address</dt>
-                        <dd class="col-8">@Model.OwnerAddress</dd>
-                        <dt class="col-4">Place of Birth</dt>
-                        <dd class="col-8">@Model.OwnerPlaceOfBirth</dd>
-                        <dt class="col-4">Education</dt>
-                        <dd class="col-8">@Model.OwnerEducation</dd>
+                        <dt class="col-5 fw-bold">Name</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OwnerName</dd>
+                        <dt class="col-5 fw-bold">TIN</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OwnerTin</dd>
+                        <dt class="col-5 fw-bold">Gender</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OwnerGender</dd>
+                        <dt class="col-5 fw-bold">Birthday</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OwnerBirthday.ToString("yyyy-MM-dd")</dd>
+                        <dt class="col-5 fw-bold">Citizenship</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OwnerCitizenship</dd>
+                        <dt class="col-5 fw-bold">Civil Status</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OwnerCivilStatus</dd>
+                        <dt class="col-5 fw-bold">Email</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OwnerEmail</dd>
+                        <dt class="col-5 fw-bold">Mobile</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OwnerMobile</dd>
                     </dl>
                 </div>
             </div>
@@ -111,28 +109,26 @@
 
         <!-- Business -->
         <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header fw-bold bg-secondary text-white py-3">Business Information</div>
-                <div class="card-body">
+            <div class="card shadow-sm border-0" style="border-radius: 10px;">
+                <div class="card-header fw-bold text-white py-3" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-building me-2"></i>Business Information
+                </div>
+                <div class="card-body" style="background-color: #fafafa;">
                     <dl class="row mb-0">
-                        <dt class="col-4">Name</dt>
-                        <dd class="col-8">@Model.BusinessName</dd>
-                        <dt class="col-4">TIN</dt>
-                        <dd class="col-8">@Model.BusinessTin</dd>
-                        <dt class="col-4">Type</dt>
-                        <dd class="col-8">@Model.BusinessType</dd>
-                        <dt class="col-4">Email</dt>
-                        <dd class="col-8">@Model.BusinessEmail</dd>
-                        <dt class="col-4">Mobile</dt>
-                        <dd class="col-8">@Model.BusinessMobile</dd>
-                        <dt class="col-4">Landline</dt>
-                        <dd class="col-8">@Model.BusinessLandline</dd>
-                        <dt class="col-4">Website</dt>
-                        <dd class="col-8">@Model.BusinessWebsite</dd>
-                        <dt class="col-4">Office Address</dt>
-                        <dd class="col-8">@Model.OfficeAddress</dd>
-                        <dt class="col-4">Office Zip</dt>
-                        <dd class="col-8">@Model.OfficeZip</dd>
+                        <dt class="col-5 fw-bold">Name</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.BusinessName</dd>
+                        <dt class="col-5 fw-bold">TIN</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.BusinessTin</dd>
+                        <dt class="col-5 fw-bold">Type</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.BusinessType</dd>
+                        <dt class="col-5 fw-bold">Email</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.BusinessEmail</dd>
+                        <dt class="col-5 fw-bold">Mobile</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.BusinessMobile</dd>
+                        <dt class="col-5 fw-bold">Website</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.BusinessWebsite</dd>
+                        <dt class="col-5 fw-bold">Office Address</dt>
+                        <dd class="col-7" style="color: #2c3e50;">@Model.OfficeAddress</dd>
                     </dl>
                 </div>
             </div>
@@ -140,3 +136,18 @@
 
     </div>
 </div>
+
+<style>
+    .card-header {
+        border-bottom: none !important;
+    }
+
+    .card:hover {
+        box-shadow: 0 4px 12px rgba(244, 180, 26, 0.15) !important;
+    }
+
+    dl dt {
+        color: #666;
+        font-size: 0.9rem;
+    }
+</style>

@@ -4,115 +4,121 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="fw-bold">Welcome back, @(ViewBag.UserName ?? "User")!</h1>
-            <p class="text-muted">Here's your loan management overview</p>
-        </div>
-        <div class="d-flex gap-3">
-            <a asp-controller="LoanBee"
-               asp-action="CreateLoanApplication"
-               class="btn btn-primary text-white btn-lg shadow-sm">
-                + New Application
-            </a>
-
-            <a asp-controller="LoanBee"
-               asp-action="ViewAllApplications"
-               class="btn btn-outline-primary btn-lg shadow-sm btn-outline-warning-white">
-                View All Applications
-            </a>
-
+<div class="container mt-5 mb-5">
+    <!-- Header Section -->
+    <div class="header-section mb-5">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h1 class="welcome-title">Welcome back, @(ViewBag.UserName ?? "User")! 🐝</h1>
+                <p class="welcome-subtitle">Manage your loan applications with confidence</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a asp-controller="LoanBee"
+                   asp-action="CreateLoanApplication"
+                   class="btn btn-primary-yellow btn-lg shadow-sm fw-bold">
+                    + New Application
+                </a>
+                <a asp-controller="LoanBee"
+                   asp-action="ViewAllApplications"
+                   class="btn btn-outline-yellow btn-lg shadow-sm fw-bold">
+                    View All Applications
+                </a>
+            </div>
         </div>
     </div>
 
     @if (Model == null)
     {
-        <div class="text-center p-5 bg-white rounded shadow-sm border">
-            <h3 class="text-muted">No Applications Found</h3>
-            <p class="lead mb-4">It looks like you haven't submitted a loan application yet.</p>
-            <a asp-controller="LoanBee" asp-action="CreateLoanApplication" class="btn btn-outline-primary px-5">Get Started Now</a>
+        <div class="empty-state">
+            <div class="empty-state-content">
+                <h3>No Applications Found</h3>
+                <p>It looks like you haven't submitted a loan application yet. Get started today!</p>
+                <a asp-controller="LoanBee" asp-action="CreateLoanApplication" class="btn btn-primary-yellow btn-lg fw-bold">Get Started Now</a>
+            </div>
         </div>
     }
     else
     {
-        <div class="card mb-4 shadow-sm border-0">
-            <div class="card-header bg-white py-3">
+        <!-- Owner Information Card -->
+        <div class="info-card mb-4">
+            <div class="info-card-header">
                 <h5 class="mb-0 fw-bold">Owner Information</h5>
             </div>
-            <div class="card-body">
+            <div class="info-card-body">
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <small class="text-muted d-block text-uppercase fw-bold">Full Name</small>
-                        <span>@Model.Owner_name</span>
+                        <small class="info-label">Full Name</small>
+                        <span class="info-value">@Model.Owner_name</span>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <small class="text-muted d-block text-uppercase fw-bold">TIN</small>
-                        <span>@Model.Owner_tin_no</span>
+                        <small class="info-label">TIN</small>
+                        <span class="info-value">@Model.Owner_tin_no</span>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <small class="text-muted d-block text-uppercase fw-bold">Civil Status</small>
-                        <span>@Model.Owner_civil_status</span>
+                        <small class="info-label">Civil Status</small>
+                        <span class="info-value">@Model.Owner_civil_status</span>
                     </div>
                     <div class="col-md-4">
-                        <small class="text-muted d-block text-uppercase fw-bold">Email</small>
-                        <span>@Model.Owner_email_address</span>
+                        <small class="info-label">Email</small>
+                        <span class="info-value">@Model.Owner_email_address</span>
                     </div>
                     <div class="col-md-4">
-                        <small class="text-muted d-block text-uppercase fw-bold">Mobile</small>
-                        <span>@Model.Owner_mobile_no</span>
+                        <small class="info-label">Mobile</small>
+                        <span class="info-value">@Model.Owner_mobile_no</span>
                     </div>
                     <div class="col-md-4">
-                        <small class="text-muted d-block text-uppercase fw-bold">Landline</small>
-                        <span>@Model.Owner_landline</span>
+                        <small class="info-label">Landline</small>
+                        <span class="info-value">@Model.Owner_landline</span>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Applications and Bank Accounts Section -->
         <div class="row">
+            <!-- Active Applications -->
             <div class="col-lg-8 mb-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-white py-3">
+                <div class="info-card h-100">
+                    <div class="info-card-header">
                         <h5 class="mb-0 fw-bold">Active Applications</h5>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="info-card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead class="bg-light">
+                            <table class="applications-table">
+                                <thead>
                                     <tr>
-                                        <th class="ps-3 border-0">Amount</th>
-                                        <th class="border-0">Tenor</th>
-                                        <th class="border-0">Applied Date</th>
-                                        <th class="text-center border-0">Status</th>
+                                        <th>Amount</th>
+                                        <th>Tenor</th>
+                                        <th>Applied Date</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var app in Model.Applications.Where(a => a.Application_status != "Completed").OrderByDescending(a => a.Application_date))
                                     {
                                         <tr>
-                                            <td class="ps-3 fw-bold">@app.Loan_amount.ToString("C0", new System.Globalization.CultureInfo("en-PH"))</td>
+                                            <td class="fw-bold">@app.Loan_amount.ToString("C0", new System.Globalization.CultureInfo("en-PH"))</td>
                                             <td>@app.Loan_tenor</td>
                                             <td>@app.Application_date.ToString("yyyy-MM-dd")</td>
-                                            <td class="text-center">
+                                            <td>
                                                 @{
                                                     var badgeClass = app.Application_status switch
                                                     {
-                                                        "Approved" => "bg-success text-white",
-                                                        "Under Review" => "bg-warning text-dark",
-                                                        "Rejected" => "bg-danger text-white", // Added red badge for Rejected status
-                                                        "Completed" => "bg-light text-dark border",
-                                                        _ => "bg-info text-white"
+                                                        "Approved" => "badge-success",
+                                                        "Under Review" => "badge-warning",
+                                                        "Rejected" => "badge-danger",
+                                                        "Completed" => "badge-light",
+                                                        _ => "badge-info"
                                                     };
                                                 }
-                                                <span class="badge @badgeClass rounded-pill px-3">@app.Application_status</span>
+                                                <span class="status-badge @badgeClass">@app.Application_status</span>
                                             </td>
                                         </tr>
                                     }
                                     @if (!Model.Applications.Any(a => a.Application_status != "Completed"))
                                     {
                                         <tr>
-                                            <td colspan="4" class="text-center py-4 text-muted">No ongoing applications.</td>
+                                            <td colspan="4" class="text-center py-4">No ongoing applications.</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -122,24 +128,25 @@
                 </div>
             </div>
 
+            <!-- Bank Accounts -->
             <div class="col-lg-4 mb-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-white py-3">
+                <div class="info-card h-100">
+                    <div class="info-card-header">
                         <h5 class="mb-0 fw-bold">Bank Accounts</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="info-card-body">
                         @foreach (var bank in Model.BankAccounts)
                         {
-                            <div class="p-3 border rounded mb-3 bg-light">
+                            <div class="bank-account-item">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
                                         <h6 class="mb-0 fw-bold">@bank.Account_no</h6>
-                                        <small class="text-muted">@bank.Account_type</small>
+                                        <small class="account-type">@bank.Account_type</small>
                                     </div>
-                                    <span class="badge bg-dark">Linked</span>
+                                    <span class="badge-linked">Linked</span>
                                 </div>
                                 <hr class="my-2" />
-                                <small class="text-muted">Partner since: @bank.Relationship_since</small>
+                                <small class="partner-since">Partner since: @bank.Relationship_since</small>
                             </div>
                         }
                         @if (!Model.BankAccounts.Any())
@@ -154,18 +161,252 @@
 </div>
 
 <style>
-    body { background-color: #f8f9fa; }
-    .card { border-radius: 12px; }
-    .card-header { border-bottom: 1px solid #f0f0f0; }
-    .table thead th { font-size: 0.85rem; color: #6c757d; }
+    /* Yellow theme color palette and modern styling */
+    :root {
+        --primary-yellow: #f4b41a;
+        --primary-yellow-dark: #d4941a;
+        --primary-yellow-light: #ffd966;
+        --dark-charcoal: #2c2c2c;
+        --light-bg: #fafaf7;
+        --soft-gray: #e8e8e4;
+        --text-muted: #666;
+    }
 
-    /* .btn-outline-warning-white {
-        color: #fff;
-        border-color: #ffc107;
-    } */
+    body {
+        background-color: var(--light-bg);
+        color: var(--dark-charcoal);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
 
-        .btn-outline-warning-white:hover {
-            background-color: #007bff;
-            color: white; /* Bootstrap dark text */
+    /* Header Section */
+    .welcome-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--dark-charcoal);
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+    }
+
+    .welcome-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 0;
+    }
+
+    /* Buttons */
+    .btn-primary-yellow {
+        background-color: var(--primary-yellow);
+        color: var(--dark-charcoal);
+        border: none;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+
+        .btn-primary-yellow:hover {
+            background-color: var(--primary-yellow-dark);
+            color: var(--dark-charcoal);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(244, 180, 26, 0.3);
         }
+
+    .btn-outline-yellow {
+        color: var(--primary-yellow-dark);
+        border: 2px solid var(--primary-yellow);
+        background-color: transparent;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-yellow:hover {
+            background-color: var(--primary-yellow);
+            color: var(--dark-charcoal);
+        }
+
+    /* Cards */
+    .info-card {
+        background: white;
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+    }
+
+        .info-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+    .info-card-header {
+        background: linear-gradient(135deg, var(--primary-yellow) 0%, var(--primary-yellow-light) 100%);
+        padding: 1.5rem;
+        border-bottom: none;
+    }
+
+        .info-card-header h5 {
+            color: var(--dark-charcoal);
+        }
+
+    .info-card-body {
+        padding: 1.5rem;
+    }
+
+    /* Information Labels */
+    .info-label {
+        display: block;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-bottom: 0.3rem;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        display: block;
+        font-size: 1rem;
+        color: var(--dark-charcoal);
+        font-weight: 500;
+    }
+
+    /* Table Styling */
+    .applications-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .applications-table thead {
+            background-color: #f5f5f5;
+            border-bottom: 2px solid var(--soft-gray);
+        }
+
+            .applications-table thead th {
+                padding: 1rem;
+                text-align: left;
+                font-weight: 600;
+                font-size: 0.9rem;
+                color: var(--dark-charcoal);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+        .applications-table tbody tr {
+            border-bottom: 1px solid var(--soft-gray);
+            transition: background-color 0.2s ease;
+        }
+
+            .applications-table tbody tr:hover {
+                background-color: var(--light-bg);
+            }
+
+        .applications-table tbody td {
+            padding: 1rem;
+            color: var(--dark-charcoal);
+        }
+
+    /* Status Badges */
+    .status-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .badge-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .badge-warning {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .badge-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .badge-light {
+        background-color: var(--soft-gray);
+        color: var(--dark-charcoal);
+    }
+
+    /* Bank Account Item */
+    .bank-account-item {
+        padding: 1rem;
+        border: 1px solid var(--soft-gray);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        background-color: #fafaf7;
+        transition: border-color 0.3s ease;
+    }
+
+        .bank-account-item:hover {
+            border-color: var(--primary-yellow);
+        }
+
+    .account-type {
+        color: var(--text-muted);
+    }
+
+    .partner-since {
+        color: var(--text-muted);
+    }
+
+    .badge-linked {
+        display: inline-block;
+        background-color: var(--primary-yellow);
+        color: var(--dark-charcoal);
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    /* Empty State */
+    .empty-state {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 500px;
+    }
+
+    .empty-state-content {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        max-width: 500px;
+    }
+
+        .empty-state-content h3 {
+            color: var(--dark-charcoal);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state-content p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+        }
+
+    .welcome-subtitle {
+        font-size: 1rem;
+    }
+
+    .header-section {
+        margin-bottom: 2rem;
+    }
+
+    }
 </style>

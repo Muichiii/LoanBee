@@ -1,48 +1,80 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
+﻿
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #2c2c2c !important;
 }
 
 a {
-  color: #0077cc;
+    color: #d4941a;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
+
+    a:hover {
+        color: #f4b41a;
+    }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #2c2c2c;
+    background-color: #f4b41a;
+    border-color: #d4941a;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    .btn-primary:hover {
+        background-color: #d4941a;
+        border-color: #b87a14;
+        color: #2c2c2c;
+    }
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #2c2c2c;
+    background-color: #f4b41a;
+    border-color: #d4941a;
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e8e8e4;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e8e8e4;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+    background-color: #fafaf7;
+    border-top: 1px solid #e8e8e4;
 }
+
+.navbar {
+    background-color: white !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #2c2c2c !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+    .navbar-light .navbar-nav .nav-link:hover {
+        color: #d4941a !important;
+    }

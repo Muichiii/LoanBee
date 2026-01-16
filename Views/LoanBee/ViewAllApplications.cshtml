@@ -10,10 +10,10 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <div>
-            <h2 class="fw-bold mb-0">Loan Applications</h2>
+            <h2 class="fw-bold mb-0" style="color: #2c3e50;">Loan Applications</h2>
             <p class="text-muted">Manage and track all your loan applications</p>
         </div>
-        <a asp-action="CreateLoanApplication" class="btn btn-primary text-white fw-bold px-4 py-2 shadow-sm" style="border-radius: 8px;">
+        <a asp-action="CreateLoanApplication" class="btn text-white fw-bold px-4 py-2 shadow-sm" style="border-radius: 8px; background-color: #f4b41a; color: #2c3e50 !important; border: none;">
             <i class="bi bi-plus-lg"></i> New Application
         </a>
     </div>
@@ -22,7 +22,6 @@
         <div class="card-body">
             <ul class="nav nav-pills">
                 @{
-                    // Added "Rejected" to the filter array
                     string[] statuses = { "All", "Approved", "Under Review", "Rejected", "Completed" };
                 }
 
@@ -31,8 +30,8 @@
                     <li class="nav-item me-2">
                         <a asp-action="ViewAllApplications"
                            asp-route-status="@s"
-                           class="nav-link px-4 @(currentFilter == s ? "bg-primary text-white shadow-sm" : "text-dark")"
-                           style="font-weight: 500; border-radius: 8px;">
+                           class="nav-link px-4 @(currentFilter == s ? "text-white shadow-sm" : "text-dark")"
+                           style="font-weight: 500; border-radius: 8px; @(currentFilter == s ? "background-color: #f4b41a;" : "")">
                             @s
                         </a>
                     </li>
@@ -81,7 +80,7 @@
                                             {
                                                 "Approved" => "bg-success text-white",
                                                 "Under Review" => "bg-warning text-dark",
-                                                "Rejected" => "bg-danger text-white", // Added red badge for Rejected status
+                                                "Rejected" => "bg-danger text-white",
                                                 "Completed" => "bg-light text-dark border",
                                                 _ => "bg-info text-white"
                                             };
@@ -119,7 +118,7 @@
         transition: 0.2s;
     }
 
-    .nav-link:hover:not(.bg-warning) {
+    .nav-link:hover:not([style*="background-color: #f4b41a"]) {
         background-color: #eee;
     }
 </style>

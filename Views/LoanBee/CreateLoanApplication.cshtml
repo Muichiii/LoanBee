@@ -6,8 +6,12 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-<div class="container mt-4">
-    <h2 class="mb-4">@(ViewBag.IsPreview == true ? "Review Your Application" : "Loan Application Form")</h2>
+<div class="container mt-5 mb-5">
+    <!-- Enhanced header with better styling and visual hierarchy -->
+    <div class="mb-5 pb-3 border-bottom" style="border-color: #f4b41a !important;">
+        <h1 class="fw-bold mb-1" style="color: #2c3e50;">@(ViewBag.IsPreview == true ? "Review Your Application" : "Loan Application Form")</h1>
+        <p class="text-muted mb-0">@(ViewBag.IsPreview == true ? "Please review your information before submitting" : "Complete all required fields to proceed")</p>
+    </div>
 
     <form asp-action="CreateLoanApplication" method="post">
         @if (ViewBag.IsPreview == true)
@@ -41,56 +45,170 @@
             @Html.HiddenFor(m => m.BankAccount.Account_type)
             @Html.HiddenFor(m => m.BankAccount.Relationship_since)
 
-            @* Review Cards Section *@
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-primary text-white fw-bold">1. Loan Details</div>
-                <div class="card-body row">
-                    <div class="col-md-4"><strong>Amount:</strong><br />@Model.Application.Loan_amount.ToString("N2")</div>
-                    <div class="col-md-4"><strong>Tenor:</strong><br />@Model.Application.Loan_tenor</div>
-                    <div class="col-md-4"><strong>Purpose:</strong><br />@Model.Application.Loan_purpose</div>
+            <!-- Enhanced review cards with improved professional styling, better spacing, and visual hierarchy -->
+            <div class="card mb-4 shadow-lg border-0" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header fw-bold text-white py-3 px-4" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-cash-coin me-2"></i>1. Loan Details
+                </div>
+                <div class="card-body p-4" style="background-color: #fafafa;">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <p class="text-muted small mb-2">Amount</p>
+                            <p class="mb-0" style="color: #2c3e50; font-size: 1.15rem; font-weight: 600;">@Model.Application.Loan_amount.ToString("N2")</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="text-muted small mb-2">Tenor</p>
+                            <p class="mb-0" style="color: #2c3e50; font-size: 1.15rem; font-weight: 600;">@Model.Application.Loan_tenor</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="text-muted small mb-2">Purpose</p>
+                            <p class="mb-0" style="color: #2c3e50; font-size: 1.15rem; font-weight: 600;">@Model.Application.Loan_purpose</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-secondary text-white fw-bold">2. Business Information</div>
-                <div class="card-body row">
-                    <div class="col-md-4 mb-2"><strong>Name:</strong><br />@Model.Business.Business_name</div>
-                    <div class="col-md-4 mb-2"><strong>TIN:</strong><br />@Model.Business.Business_tin_no</div>
-                    <div class="col-md-4 mb-2"><strong>Type:</strong><br />@Model.Business.Business_type</div>
-                    <div class="col-md-8 mb-2"><strong>Office Address:</strong><br />@Model.Business.Office_address</div>
-                    <div class="col-md-4 mb-2"><strong>Zip Code:</strong><br />@Model.Business.Office_zip</div>
+            <div class="card mb-4 shadow-lg border-0" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header fw-bold text-white py-3 px-4" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-building me-2"></i>2. Business Information
+                </div>
+                <div class="card-body p-4" style="background-color: #fafafa;">
+                    <div class="row g-4">
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Business Name</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Business_name</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">TIN</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Business_tin_no</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Type</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Business_type</p>
+                        </div>
+                        <div class="col-md-8 mb-2">
+                            <p class="text-muted small mb-2">Office Address</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Office_address</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Zip Code</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Office_zip</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Landline</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Business_landline</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Mobile Number</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Business_mobile_no</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Email</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Business_email</p>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <p class="text-muted small mb-2">Website</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Business.Business_website</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-info text-white fw-bold">3. Owner Information</div>
-                <div class="card-body row">
-                    <div class="col-md-4 mb-2"><strong>Full Name:</strong><br />@Model.Owner.Owner_name</div>
-                    <div class="col-md-4 mb-2"><strong>TIN:</strong><br />@Model.Owner.Owner_tin_no</div>
-                    <div class="col-md-2 mb-2"><strong>Gender:</strong><br />@Model.Owner.Owner_gender</div>
-                    <div class="col-md-2 mb-2"><strong>Birthday:</strong><br />@Model.Owner.Owner_birthday.ToShortDateString()</div>
+            <div class="card mb-4 shadow-lg border-0" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header fw-bold text-white py-3 px-4" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-person-fill me-2"></i>3. Owner Information
+                </div>
+                <div class="card-body p-4" style="background-color: #fafafa;">
+                    <div class="row g-4">
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Full Name</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_name</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">TIN</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_tin_no</p>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <p class="text-muted small mb-2">Gender</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_gender</p>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <p class="text-muted small mb-2">Birthday</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_birthday.ToShortDateString()</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Citizenship</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_citizenship</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Civil Status</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_civil_status</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Place of Birth</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_place_of_birth</p>
+                        </div>
+                        <div class="col-md-8 mb-2">
+                            <p class="text-muted small mb-2">Home Address</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_address</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Mobile Number</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_mobile_no</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Landline</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_landline</p>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <p class="text-muted small mb-2">Email</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_email_address</p>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <p class="text-muted small mb-2">Educational Attainment</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.Owner.Owner_education</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-dark text-white fw-bold">4. Bank Details</div>
-                <div class="card-body row">
-                    <div class="col-md-4"><strong>Account No:</strong><br />@Model.BankAccount.Account_no</div>
-                    <div class="col-md-4"><strong>Type:</strong><br />@Model.BankAccount.Account_type</div>
-                    <div class="col-md-4"><strong>Since:</strong><br />@Model.BankAccount.Relationship_since</div>
+            <div class="card mb-4 shadow-lg border-0" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header fw-bold text-white py-3 px-4" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);">
+                    <i class="bi bi-bank me-2"></i>4. Bank Details
+                </div>
+                <div class="card-body p-4" style="background-color: #fafafa;">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <p class="text-muted small mb-2">Account Number</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.BankAccount.Account_no</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="text-muted small mb-2">Account Type</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.BankAccount.Account_type</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="text-muted small mb-2">Relationship Since</p>
+                            <p class="mb-0" style="color: #2c3e50; font-weight: 600;">@Model.BankAccount.Relationship_since</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="text-center mb-5">
-                <button type="submit" name="submitButton" value="Edit" class="btn btn-secondary btn-lg px-5 me-3">Edit Details</button>
-                <button type="submit" name="submitButton" value="Submit" class="btn btn-success btn-lg px-5">Confirm & Submit</button>
+            <!-- Enhanced action buttons with improved styling and hover effects -->
+            <div class="text-center mb-5 mt-5">
+                <button type="submit" name="submitButton" value="Edit" class="btn btn-lg px-5 me-3 fw-bold" style="color: #f4b41a; background-color: #fff; border: 2px solid #f4b41a; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#f4b41a'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='#f4b41a';">
+                    <i class="bi bi-pencil me-2"></i>Edit Details
+                </button>
+                <button type="submit" name="submitButton" value="Submit" class="btn btn-lg px-5 fw-bold text-white" style="background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%); border: none; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 8px 20px rgba(244, 180, 26, 0.3)';" onmouseout="this.style.boxShadow='none';">
+                    <i class="bi bi-check-circle me-2"></i>Confirm & Submit
+                </button>
             </div>
         }
         else
         {
             @* Form Input Section *@
             <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-primary text-white fw-bold">Loan Details</div>
+                <div class="card-header loan-form-header text-white fw-bold">Loan Details</div>
                 <div class="card-body row">
                     <div class="col-md-4 mb-3">
                         <label asp-for="Application.Loan_amount" class="form-label">Amount</label>
@@ -125,7 +243,7 @@
             </div>
 
             <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-secondary text-white fw-bold">Business Information</div>
+                <div class="card-header loan-form-header text-white fw-bold">Business Information</div>
                 <div class="card-body row">
                     <div class="col-md-4 mb-3">
                         <label asp-for="Business.Business_tin_no" class="form-label">Business TIN</label>
@@ -176,15 +294,15 @@
             </div>
 
             <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-info text-white fw-bold">Owner Information</div>
+                <div class="card-header loan-form-header text-white fw-bold">Owner Information</div>
                 <div class="card-body row">
                     <div class="col-md-6 mb-3">
                         <label asp-for="Owner.Owner_name" class="form-label">Full Name</label>
                         <input asp-for="Owner.Owner_name" class="form-control" />
                         <span asp-validation-for="Owner.Owner_name" class="text-danger small"></span>
                     </div>
-                    
-                   
+
+
                     <div class="col-md-6 mb-3">
                         <label asp-for="Owner.Owner_tin_no" class="form-label">Owner TIN</label>
 
@@ -231,7 +349,7 @@
                         </select>
                         <span asp-validation-for="Owner.Owner_civil_status" class="text-danger small"></span>
                     </div>
-                    
+
                     <div class="col-md-8 mb-3">
                         <label asp-for="Owner.Owner_address" class="form-label">Home Address</label>
                         <input asp-for="Owner.Owner_address" class="form-control" />
@@ -253,6 +371,11 @@
                         <span asp-validation-for="Owner.Owner_landline" class="text-danger small"></span>
                     </div>
                     <div class="col-md-3 mb-3">
+                        <label asp-for="Owner.Owner_email_address" class="form-label">Email Address</label>
+                        <input asp-for="Owner.Owner_email_address" class="form-control" type="email" />
+                        <span asp-validation-for="Owner.Owner_email_address" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
                         <label asp-for="Owner.Owner_education" class="form-label">Educational Attainment</label>
                         <input asp-for="Owner.Owner_education" class="form-control" />
                         <span asp-validation-for="Owner.Owner_education" class="text-danger small"></span>
@@ -261,7 +384,7 @@
             </div>
 
             <div class="card mb-4 shadow-sm">
-                <div class="card-header bg-dark text-white fw-bold">Bank Account Details</div>
+                <div class="card-header loan-form-header text-white fw-bold">Bank Account Details</div>
                 <div class="card-body row">
                     <div class="col-md-4 mb-3">
                         <label asp-for="BankAccount.Account_no" class="form-label">Account Number</label>
@@ -287,7 +410,7 @@
             </div>
 
             <div class="text-center mb-5">
-                <button type="submit" name="submitButton" value="Next" class="btn btn-primary btn-lg px-5">Next</button>
+                <button type="submit" name="submitButton" value="Next" class="btn btn-primary btn-lg px-5" style="background-color: #f4b41a; border-color: #f4b41a; color: #2c3e50;">Next</button>
             </div>
         }
     </form>
@@ -298,3 +421,35 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<style>
+    .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #f4b41a;
+        box-shadow: 0 0 0 0.2rem rgba(244, 180, 26, 0.15);
+    }
+
+    .form-control,
+    .form-select {
+        border-color: #ddd;
+        border-radius: 6px;
+    }
+
+    .loan-form-header {
+        background: linear-gradient(135deg, #f4b41a 0%, #e8a007 100%);
+    }
+
+    .card {
+        transition: box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(244, 180, 26, 0.15) !important;
+        }
+</style>
