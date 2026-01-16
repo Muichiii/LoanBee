@@ -377,7 +377,15 @@
                     </div>
                     <div class="col-md-3 mb-3">
                         <label asp-for="Owner.Owner_education" class="form-label">Educational Attainment</label>
-                        <input asp-for="Owner.Owner_education" class="form-control" />
+                        <select asp-for="Owner.Owner_education" class="form-select">
+                            <option value="">-- Select --</option>
+                            <option value="High School">High School</option>
+                            <option value="Senior High School">Senior High School</option>
+                            <option value="College">College</option>
+                            <option value="Post-Graduate">Post-Graduate</option>
+                            <option value="Technical/Vocational">Technical/Vocational</option>
+                            </select>
+
                         <span asp-validation-for="Owner.Owner_education" class="text-danger small"></span>
                     </div>
                 </div>
