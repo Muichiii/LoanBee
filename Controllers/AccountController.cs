@@ -17,6 +17,14 @@ namespace LoanBee.Controllers
         [HttpGet]
         public IActionResult Login() => View();
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // clears UserName/UserId/etc.
+            return RedirectToAction("Login", "Account", new { area = "" });
+        }
+
+
         [HttpPost]
         public IActionResult Signup(User user)
         {

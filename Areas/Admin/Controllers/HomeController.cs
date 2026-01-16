@@ -3,6 +3,8 @@ using LoanBee.Data;
 //using LoanBee.Models.ViewModels.Admin;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 
 namespace LoanBee.Areas.Admin.Controllers
@@ -242,5 +244,18 @@ namespace LoanBee.Areas.Admin.Controllers
             return status == "Rejected" || status == "Completed";
         }
 
+        // FOR LOGOUT
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                context.Result = RedirectToAction("Login", "Account", new { area = "" });
+                return;
+            }
+
+            base.OnActionExecuting(context);
+        }
     }
 }
