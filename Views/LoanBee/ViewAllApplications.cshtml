@@ -78,14 +78,14 @@
                                         @{
                                             var badgeClass = app.Application_status switch
                                             {
-                                                "Approved" => "bg-success text-white",
-                                                "Under Review" => "bg-warning text-dark",
-                                                "Rejected" => "bg-danger text-white",
+                                                "Approved" => "badge-success",
+                                                "Under Review" => "badge-warning",
+                                                "Rejected" => "badge-danger",
                                                 "Completed" => "bg-light text-dark border",
-                                                _ => "bg-info text-white"
+                                                _ => "badge-info"
                                             };
                                         }
-                                        <span class="badge @badgeClass rounded-pill px-3 py-2" style="min-width: 110px;">
+                                        <span class="status-badge @badgeClass rounded-pill px-3 py-2">
                                             @app.Application_status
                                         </span>
                                     </td>
@@ -120,5 +120,42 @@
 
     .nav-link:hover:not([style*="background-color: #f4b41a"]) {
         background-color: #eee;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        display: inline-block;
+        padding: 0.5rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: capitalize;
+        text-align: center;
+        min-width: 110px;
+    }
+
+    .badge-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .badge-warning {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .badge-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .badge-info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .badge-light {
+        background-color: var(--soft-gray);
+        color: var(--dark-charcoal);
     }
 </style>
